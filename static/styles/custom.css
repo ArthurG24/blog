@@ -33,10 +33,24 @@
 body {
     background-color: #06212e;
     font-family: Verdana, Arial, Tahoma, Serif;
+    color: #cfcbc5;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #e13e1e;
+    transition: 0.3s;
+}
+
+a:active {
+    color: #f8a061;
 }
 
 .new-header {
-    background-image: url("img/bg2.jpg");
+    background-image: url("../img/bg.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -66,7 +80,6 @@ body {
 
 .nav a {
     color: aliceblue;
-    text-decoration: none;
     font-weight: bold;
     padding: 0;
     font-size: 1.1em;
@@ -74,7 +87,7 @@ body {
 
 .nav a:hover {
     color: #e13e1e;
-    text-decoration: underline;
+    transition: 0.3s;
 }
 
 .nav a:active {
@@ -105,17 +118,19 @@ body {
 }
 
 .article .thumb {
-    margin: 15px 15px 0px 8px;
+    margin: 15px 20px 3px 10px;
     float: right;
     border-radius: 10px;
     width: 300px;
-    height: 250px;
+    height: 245px;
     object-fit: cover;
+    box-shadow: 0px 0px 5px 4px #0d3e57;
 }
 
 .article p {
     font-size: 1.2em;
     padding:10px 15px 10px 20px;
+    letter-spacing: 0.5px;
 }
 
 .aside p {
@@ -127,11 +142,35 @@ body {
 .article, .aside {
     box-sizing: border-box;
     background-color: #03141d;
-    color: #cfcbc5;
     margin-top: 20px;
     border-radius: 10px;
     border: #0d3e57 solid;
     box-shadow: 1px 1px 5px black;
+}
+
+.create-article {
+    width: 75%;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.title-label {
+    margin-left: 15px;
+}
+
+.title-input {
+    margin: 10px 50px 20px 5px;
+    background-color: #03141d;
+    color: #cfcbc5;
+    padding-left: 5px;
+    font-size: 1.1em;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.file-input {
+    margin: 10px 50px 20px 0px;
+    padding-left: 5px;
 }
 
 .col-md-3 {
@@ -140,4 +179,28 @@ body {
 
 .col-md-9 {
     padding-left:0;
+}
+
+.finalize {
+    float: right;
+    margin-right: 10px;
+    clear: right;
+}
+
+input[type=Submit] {
+    margin: 20px 0px 10px 10px;
+    background-color: #03141d;
+    color: #cfcbc5;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+footer {
+    font-size: 1.1em;
+    text-align: center;
+    margin: 15px;
+}
+
+footer a {
+    color: #cfcbc5;
 }

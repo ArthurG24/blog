@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cool Morning</title>
+
+    <script src="https://cdn.tiny.cloud/1/p2xg1u6v9g881nz517hwelxil9r2l10u68wc0g5itmbsljaf/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <link href="{{ url_for('static', filename='styles/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/custom.css')}}" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+    <div class="container">
+
+        <div class="p-5 new-header"></div>
+
+        <ul class="list-inline nav">
+            <div class="nav-block">
+                <li class="list-inline-item"><a href="#">Developpement personel
+                </a></li><li class="list-inline-item"><a href="#">Hi-tech
+                </a></li><li class="list-inline-item"><a href="#">Voyages
+                </a></li><li class="list-inline-item"><a href="#">Divers
+                </a></li>
+            </div>
+        </ul>
+            
+        <div class="container">
+
+            {% block body %}{% endblock %}
+            
+        </div>
+
+        <div class="container">
+            <footer>Copyright &copy; 2022 Cool Morning - <a href="#">Admin</a></footer>
+        </div>
+        
+    </div>
+
+
+
+
+
+    <script src="{{ url_for('static', filename='styles/bootstrap.min.js')}}" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>

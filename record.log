@@ -1,0 +1,4 @@
+2022-07-07 00:48:35,702 INFO werkzeug MainThread :  * Detected change in 'F:\\Documents\\code\\blog\\application.py', reloading
+2022-07-07 00:48:38,706 INFO werkzeug MainThread :  * Running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+2022-07-07 00:48:38,707 INFO werkzeug MainThread :  * Restarting with stat
+2022-07-07 00:49:27,198 INFO werkzeug MainThread :  * Detected change in 'F:\\Documents\\code\\blog\\application.py', reloading
