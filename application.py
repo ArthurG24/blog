@@ -15,12 +15,10 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     text = db.Column(db.Text)
-    date = db.Column(db.DateTime, default=datetime.now)
+    date = db.Column(db.DateTime)
     posted = db.Column(db.Boolean, default=False)
     author = db.Column(db.String(50))
-    thumb_img = db.Column(db.Text)
-    thumb_mimetype = db.Column(db.Text)
-
+    img = db.Column(db.Text)
 
 @app.route("/")
 def index():
@@ -28,15 +26,33 @@ def index():
 
 @app.route("/create", methods=["POST", "GET"])
 def create():
-    x = 10
-
     if request.method == "GET":
         return render_template("create.html")
 
     else:
-        # pic = request.files["thumb"]
-        print(str(request.files))
-        article = Article(title = request.form.get("title"))
+        pic = request.files["thumb"]
+        date_selected = request.form.get("date")
+        date_object = datetime.strptime(date_selected, "%Y-%m-%d").date()
+
+        if request.form["submit_button"] == "Enregistrer":
+            article = Article(
+                title = request.form.get("title"),
+                text = request.form.get("text"),
+                date = date_object,
+                author = "Arthur",  # To do
+                img = pic.read()
+            )
+        else:
+            article = Article(
+                title = request.form.get("title"),
+                text = request.form.get("text"),
+                date = date_object,
+                posted = True,
+                author = "Arthur",  # To do
+                img = pic.read()
+            )
+
+
         db.session.add(article)
         db.session.commit()
 

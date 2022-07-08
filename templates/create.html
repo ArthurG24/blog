@@ -4,7 +4,7 @@
 
 <div class="create-article clearfix">
 
-  <form action="/create" method="POST">
+  <form action="/create" method="POST" enctype="multipart/form-data">
 
     <label for="title" class="title-label">Titre : </label>
     <input type="text" name="title" class="title-input">
@@ -18,9 +18,16 @@
       </textarea>
     </div>
 
+    <div class="date-posted">
+
+    </div>
+
     <div class="finalize">
-      <input type="submit" value="Enregistrer" name="save">
-      <input type="submit" value="Poster" name="post">
+      <label for="date">Date : </label>
+      <input type="date" name="date">
+      
+      <input type="submit" value="Enregistrer" name="submit_button">
+      <input type="submit" value="Poster" name="submit_button">
     </div>
 
   </form>

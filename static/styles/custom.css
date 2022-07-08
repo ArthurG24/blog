@@ -187,12 +187,17 @@ a:active {
     clear: right;
 }
 
-input[type=Submit] {
+input[type=submit] {
     margin: 20px 0px 10px 10px;
     background-color: #03141d;
     color: #cfcbc5;
     font-size: 1.1em;
     font-weight: bold;
+}
+
+input[type=Date] {
+    background-color: #03141d;
+    color: #cfcbc5;
 }
 
 footer {
