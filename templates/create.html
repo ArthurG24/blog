@@ -9,12 +9,13 @@
     <label for="title" class="title-label">Titre : </label>
     <input type="text" name="title" class="title-input">
 
-    <label for="thumb" class="file-label">Miniature : </label>
-    <input type="file" name="thumb" class="file-input">
+    <div class="file-upload">
+      <label for="thumb" class="file-label">Miniature : </label>
+      <input type="file" name="thumb" class="file-input">
+    </div>
 
     <div class="text">
-      <textarea name="text">
-          Welcome to TinyMCE!
+      <textarea name="text" placeholder="Commencez à écrire !">
       </textarea>
     </div>
 
@@ -25,7 +26,7 @@
     <div class="finalize">
       <label for="date">Date : </label>
       <input type="date" name="date">
-      
+
       <input type="submit" value="Enregistrer" name="submit_button">
       <input type="submit" value="Poster" name="submit_button">
     </div>

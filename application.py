@@ -13,12 +13,13 @@ db = SQLAlchemy(app)
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50))
-    text = db.Column(db.Text)
-    date = db.Column(db.DateTime)
-    posted = db.Column(db.Boolean, default=False)
-    author = db.Column(db.String(50))
-    img = db.Column(db.Text)
+    title = db.Column(db.String(50), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    posted = db.Column(db.Boolean, nullable=False)
+    author = db.Column(db.String(50), nullable=False)
+    img = db.Column(db.Text, nullable=False)
+
 
 @app.route("/")
 def index():
@@ -39,6 +40,7 @@ def create():
                 title = request.form.get("title"),
                 text = request.form.get("text"),
                 date = date_object,
+                posted = False,
                 author = "Arthur",  # To do
                 img = pic.read()
             )
