@@ -1,34 +1,7 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
+from models import Article
 import os
 
-
-app = Flask(__name__, static_folder="./static", template_folder="./templates")
-
-app.config['TEMPLATES_AUTO_RELOAD'] = True  # Used for development - check for changes in templates and static on reload
-
-UPLOAD_FOLDER = 'static/img/thumbs'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
-
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-
-db = SQLAlchemy(app)
-
-
-class Article(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    text = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    posted = db.Column(db.Boolean, nullable=False)
-    author = db.Column(db.String(50), nullable=False)
-    img = db.Column(db.String, nullable=False)
-
-
 
 
 def allowed_file(filename):

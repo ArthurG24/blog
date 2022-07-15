@@ -1,11 +1,12 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
-
-from helpers import app, db, allowed_file, countup_filename, Article, UPLOAD_FOLDER
 from PIL import Image
 
-from flask import render_template, request, redirect, url_for, Markup
+from flask import render_template, request, Markup
 
+from init import app
+from helpers import allowed_file, countup_filename
+from models import db, Article
 
 
 @app.route("/")
@@ -41,7 +42,7 @@ def create():
                 date = date_object,
                 posted = False,
                 author = "Arthur",  # To do
-                img = os.path.join(UPLOAD_FOLDER, filename),
+                img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
         else:
@@ -52,7 +53,7 @@ def create():
                 date = date_object,
                 posted = True,
                 author = "Arthur",  # To do
-                img = os.path.join(UPLOAD_FOLDER, filename),
+                img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
 
