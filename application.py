@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 from helpers import app, db, allowed_file, countup_filename, Article, UPLOAD_FOLDER
@@ -32,9 +32,10 @@ def create():
             print("error")
             # TO DO Error Page, Flask will raise an RequestEntityTooLarge exception if file too large (> 32 mb)
 
-        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%d")
 
         if request.form["submit_button"] == "Enregistrer":
+            date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
             article = Article(
                 title = request.form.get("title"),
                 text = request.form.get("text"),
@@ -43,7 +44,9 @@ def create():
                 author = "Arthur",  # To do
                 img = os.path.join(UPLOAD_FOLDER, filename),
             )
+
         else:
+            date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
             article = Article(
                 title = request.form.get("title"),
                 text = request.form.get("text"),
