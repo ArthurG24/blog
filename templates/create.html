@@ -6,22 +6,24 @@
 
   <form action="/create" method="POST" enctype="multipart/form-data">
 
-    <label for="title" class="title-label">Titre : </label>
-    <input type="text" name="title" class="title-input">
+    <div class="title-field">
+      <label for="title" class="title-label">Titre : </label>
+      <input type="text" required name="title" class="title-input">
+    </div>
 
     <div class="file-upload">
-      <label for="thumb" class="file-label">Miniature : </label>
-      <input type="file" name="thumb" class="file-input">
+      <label for="thumb" class="file-label">Choisir Miniature</label>
+      <input type="file" required name="thumb" id="thumb" class="file-input">
     </div>
 
     <div class="text-input">
-      <textarea name="text" placeholder="Commencez à écrire !">
+      <textarea name="text" required placeholder="Commencez à écrire !">
       </textarea>
     </div>
 
     <div class="finalize">
       <label for="date">Date : </label>
-      <input type="date" name="date">
+      <input type="date" id="calendar" required name="date">
 
       <div class="finalize-buttons">
         <input type="submit" value="Enregistrer" name="submit_button">
@@ -45,6 +47,8 @@ tinymce.init({
   skin_url: "/static/styles/skins/ui/custom-dark",
   content_css: "/static/styles/skins/content/custom-dark/content.css",
   });
+
+document.getElementById('calendar').valueAsDate = new Date();
 </script>
 
 {% endblock %}

@@ -1,50 +1,18 @@
 from datetime import datetime
 import os
-from werkzeug.utils import secure_filename
 
+from helpers import app, db, allowed_file, countup_filename, Article, UPLOAD_FOLDER
+from PIL import Image
 
-from flask import Flask, render_template, request, Markup
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, request, Markup
 
-app = Flask(__name__)
-
-UPLOAD_FOLDER = 'static/img/thumbs'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-
-app.config['TEMPLATES_AUTO_RELOAD'] = True  # Used for development - check for changes in templates and static on reload
-
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
-
-db = SQLAlchemy(app)
-
-class Article(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
-    text = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    posted = db.Column(db.Boolean, nullable=False)
-    author = db.Column(db.String(50), nullable=False)
-    img = db.Column(db.String, nullable=False)
-
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route("/")
 def index():
-    list_texts = []
-    list_posts = Article.query.filter_by(posted=True).all()
+    list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).all()
 
-    for post in list_posts:
-        list_texts.append(Markup(post.text))
-
-    return render_template("index.html", articles=list_posts, texts=list_texts, zip=zip)
+    return render_template("index.html", articles=list_posts, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
@@ -55,8 +23,10 @@ def create():
     else:
         pic = request.files["thumb"]
         if pic and allowed_file(pic.filename):
-            filename = secure_filename(pic.filename)
-            pic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            filename = countup_filename(pic.filename)
+            img = Image.open(pic)
+            img.thumbnail([500,500], Image.ANTIALIAS)
+            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print(os.path.join(UPLOAD_FOLDER, filename))
         else:
             print("error")

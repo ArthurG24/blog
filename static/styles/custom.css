@@ -30,6 +30,20 @@
     }
 }
 
+@media (max-width: 1100px) {
+    .article-header {
+        height: 60px !important;
+    }
+
+    .article-header h2 {
+        margin-top: 5px !important;
+    }
+
+    .article-header p {
+        padding-top: 35px !important;
+    }
+}
+
 body {
     background-color: #06212e;
     font-family: Verdana, Arial, Tahoma, Serif;
@@ -123,10 +137,10 @@ a:active {
 }
 
 .aside h2 {
-    color: #cfcbc5;
+    color: #cfcfcf;
     Font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
     font-weight: bolder;
-    border-bottom: 3px solid #e13e1e;
+    border-bottom: 3px solid #c5472e;
     width: 200px;
     margin: 10px 0px 0px 30px;
     padding-left: 20px;
@@ -145,14 +159,36 @@ a:active {
 
 .article .text {
     font-size: 1.2em;
-    padding:10px 15px 10px 20px;
+    padding: 17px 15px 10px 20px;
     letter-spacing: 0.5px;
+}
+
+.article h3 {
+    color: #cfcfcf;
+    font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.6em;
+    font-style: italic;
+    margin-top: 0.8em;
+    margin-bottom: 0.2em;
+    margin-left: 2em;
+}
+
+.article h3:before {
+    content:"➢";
+    color: #c5472e;
+    display: inline-block;
+    margin-right: 0.2em;
 }
 
 .aside p {
     font-size: 1.1em;
     padding: 7px 10px 0px 20px;
     line-height: 1.6em;
+}
+
+.article {
+    min-height: 350px;
 }
 
 .article, .aside {
@@ -195,7 +231,7 @@ a:active {
 
 .file-upload {
     float: right;
-    margin: 10px 15px 20px 0px;
+    margin: 10px 15px 0px 0px;
 }
 
 
@@ -214,6 +250,11 @@ a:active {
         width: 300px;
     }
 
+    .title-field {
+        display: inline;
+        float: left;
+    }
+
     .finalize {
         float: left !important;
         margin-top: 15px;
@@ -223,15 +264,49 @@ a:active {
     .finalize-buttons {
         display: block !important;
     }
+
+    .create-article {
+        width: 90%;
+    }
+}
+
+@media (max-width: 950px) {
+    .file-label {
+        margin-bottom: 15px !important;
+        margin-top: 0px !important;
+    }
+
+    .create-article {
+        width: 100%;
+    }
+}
+
+.title-field {
+    display: inline;
 }
 
 .file-input {
-    padding-left: 5px;
+    display: none;
 }
 
+.file-label {
+    background-color: #03141d;
+    color: #cfcbc5;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 2px 6px 2px 6px;
+    border-top: 2px solid #CCCCCC;
+    border-right: 2px solid #979797;
+    border-bottom: 2px solid #979797;
+    border-left: 2px solid #CCCCCC;
+    margin-bottom: 10px;
+}
 
-input[type=file] {
-    width: 250px;
+.file-label:active {
+    border-top: 2px solid #979797;
+    border-right: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC;
+    border-left: 2px solid #979797;
 }
 
 .finalize {
