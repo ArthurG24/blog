@@ -10,14 +10,14 @@
         <div class="article">
             
             <div class="article-header">
-                <h2><a href="/article?id={{ article.id }}">{{ article.title }}</a></h2>
+                <h2><a href="/article?id={{ article.id }}#begin">{{ article.title }}</a></h2>
                 <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
             </div>
             
             <img src="{{ article.img }}" class="thumb">
             
             <div class="text">
-                {{ Markup(article.text)|truncate(1060) }} <span class="read-more"><a href="/article?id={{ article.id }}">Lire plus</a></span>
+                {{ Markup(article.text)|truncate(1060) }} <span class="read-more"><a href="/article?id={{ article.id }}#begin">Lire plus</a></span>
             </div>
             
         </div>

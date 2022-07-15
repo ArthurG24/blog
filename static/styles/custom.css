@@ -378,10 +378,6 @@ input[type=Date] {
     color: #cfcbc5;
 }
 
-input[type=Time] {
-    /* display: none; */
-}
-
 footer {
     font-size: 1.1em;
     text-align: center;
