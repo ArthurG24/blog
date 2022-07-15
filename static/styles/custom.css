@@ -50,10 +50,6 @@ body {
     color: #cfcbc5;
 }
 
-a {
-    text-decoration: none;
-}
-
 a:hover {
     color: #e13e1e;
     transition: 0.3s;
@@ -97,6 +93,7 @@ a:active {
     font-weight: bold;
     padding: 0;
     font-size: 1.1em;
+    text-decoration: none;
 }
 
 .nav a:hover {
@@ -111,7 +108,6 @@ a:active {
 .article-header {
     background-color: #0d3e57;
     height: 40px;
-    color: aliceblue;
     border-radius: 6px 6px 0px 0px;
     padding-left: 25px;
     height: 50px;
@@ -125,6 +121,20 @@ a:active {
     display: inline;
 }
 
+.article-header h2 a {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.article-header h2 a:hover {
+    color: #e13e1e;
+    transition: 0.3s;
+}
+
+.article-header h2 a:active {
+    color: #f8a061;
+}
+
 .article-header p {
     font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
     color: #cfcbc5;
@@ -134,6 +144,22 @@ a:active {
     padding-top: 25px;
     padding-right: 15px;
     margin-bottom: -2px;
+}
+
+.read-more a {
+    font-weight: 600;
+    font-style: italic;
+    color: #f8a061 !important;
+    text-decoration: none;
+}
+
+.read-more a:hover {
+    color: #e13e1e !important;
+    transition: 0.3s;
+}
+
+.read-more a:active {
+    color: #f8a061 !important;
 }
 
 .aside h2 {
@@ -175,10 +201,9 @@ a:active {
 }
 
 .article h3:before {
-    content:"➢";
+    content:"•";
     color: #c5472e;
     display: inline-block;
-    margin-right: 0.2em;
 }
 
 .aside p {
@@ -211,7 +236,7 @@ a:active {
 .create-article {
     width: 75%;
     margin: auto;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .title-label {
@@ -234,6 +259,27 @@ a:active {
     margin: 10px 15px 0px 0px;
 }
 
+#img-preview {
+    display: none; 
+    width: 105px;
+    height: 87px;
+    float: left;
+    margin-right: 20px;
+    margin-top: -25px;
+}
+
+#img-preview img {  
+    display: inline;
+    width: 105px;
+    height: 87px;
+    object-fit: cover;  
+    border-radius: 10px;
+    border: #6695ad 2px dashed;
+}
+
+.text-input {
+    margin-top: 40px;
+}
 
 @media (max-width: 1400px) {
     .file-upload{
@@ -330,6 +376,10 @@ input[type=submit] {
 input[type=Date] {
     background-color: #03141d;
     color: #cfcbc5;
+}
+
+input[type=Time] {
+    /* display: none; */
 }
 
 footer {

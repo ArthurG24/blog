@@ -4,7 +4,7 @@ import os
 from helpers import app, db, allowed_file, countup_filename, Article, UPLOAD_FOLDER
 from PIL import Image
 
-from flask import render_template, request, Markup
+from flask import render_template, request, redirect, url_for, Markup
 
 
 
@@ -27,7 +27,6 @@ def create():
             img = Image.open(pic)
             img.thumbnail([500,500], Image.ANTIALIAS)
             img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print(os.path.join(UPLOAD_FOLDER, filename))
         else:
             print("error")
             # TO DO Error Page, Flask will raise an RequestEntityTooLarge exception if file too large (> 32 mb)
@@ -61,3 +60,9 @@ def create():
         db.session.commit()
 
         return "Added"
+
+
+@app.route("/article")
+def article():
+    article = Article.query.filter_by(id=request.args.get("id")).first()
+    return render_template("display_article.html", article=article, Markup=Markup)

@@ -2,10 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 import os
-from PIL import Image
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./static", template_folder="./templates")
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True  # Used for development - check for changes in templates and static on reload
 
@@ -22,7 +21,7 @@ db = SQLAlchemy(app)
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     text = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     posted = db.Column(db.Boolean, nullable=False)

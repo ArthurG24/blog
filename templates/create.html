@@ -12,8 +12,9 @@
     </div>
 
     <div class="file-upload">
+      <div id="img-preview"></div>
       <label for="thumb" class="file-label">Choisir Miniature</label>
-      <input type="file" required name="thumb" id="thumb" class="file-input">
+      <input type="file" accept="image/*" required name="thumb" id="thumb" class="file-input">
     </div>
 
     <div class="text-input">
@@ -36,19 +37,6 @@
 </div>
 
 
-<script>
-tinymce.init({
-  selector: 'textarea',
-  plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
-  toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
-  toolbar_mode: 'floating',
-  tinycomments_mode: 'embedded',
-  tinycomments_author: 'Author name',
-  skin_url: "/static/styles/skins/ui/custom-dark",
-  content_css: "/static/styles/skins/content/custom-dark/content.css",
-  });
-
-document.getElementById('calendar').valueAsDate = new Date();
-</script>
+<script src="{{ url_for('static', filename='script.js')}}"></script>
 
 {% endblock %}
