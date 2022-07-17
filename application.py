@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 from PIL import Image
+import math
 
 from flask import render_template, request, Markup
 
@@ -8,12 +9,23 @@ from init import app
 from helpers import allowed_file, countup_filename
 from models import db, Article
 
+ARTICLES_PER_PAGE = 10
 
 @app.route("/")
 def index():
-    list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).all()
+    page = int(request.args.get("page", 1))
 
-    return render_template("index.html", articles=list_posts, Markup=Markup)
+    nb_articles = Article.query.filter_by(posted=True).count()
+
+    nb_pages = math.ceil(nb_articles / ARTICLES_PER_PAGE)
+
+    pages = range(1, nb_pages + 1)
+    
+    start = (page * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
+
+    list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+
+    return render_template("index.html", articles=list_posts, pages=pages, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
