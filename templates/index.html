@@ -40,7 +40,11 @@
 
 <div class="pages">
     {% for page in pages %}
-    <a href="/?page={{ page }}" class="page-button">{{ page }}</a>
+        {% if page == page_selected %}
+            <a href="/?page={{ page }}" class="page-buttons-selected">{{ page }}</a>
+        {% else %}
+            <a href="/?page={{ page }}" class="page-buttons">{{ page }}</a>
+        {% endif %}
     {% endfor %}
 </div>
 

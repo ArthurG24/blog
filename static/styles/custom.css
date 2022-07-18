@@ -378,6 +378,48 @@ input[type=Date] {
     color: #cfcbc5;
 }
 
+.pages {
+    width: 200px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.pages a {
+    text-decoration: none;
+}
+
+.page-buttons {
+    font-size: 1.3em;
+    color: #cfcbc5;
+    background-color: #2e3b40;
+    padding: 8px 12px;
+    border: solid 2px #979591;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.page-buttons:hover {
+    background-color: #03141d;
+    color: #cfcbc5;
+}
+
+.page-buttons:active {
+    background-color: #1d2529;
+}
+
+.page-buttons-selected {
+    font-size: 1.3em;
+    color: #f8a061;
+    background-color: #1d2529;
+    padding: 8px 12px;
+    border: solid 2px #979591;
+    margin: 5px;
+    border-radius: 5px;
+    pointer-events: none;
+}
+
 footer {
     font-size: 1.1em;
     text-align: center;

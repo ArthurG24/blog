@@ -13,7 +13,7 @@ ARTICLES_PER_PAGE = 10
 
 @app.route("/")
 def index():
-    page = int(request.args.get("page", 1))
+    page_selected = int(request.args.get("page", 1))
 
     nb_articles = Article.query.filter_by(posted=True).count()
 
@@ -21,11 +21,11 @@ def index():
 
     pages = range(1, nb_pages + 1)
     
-    start = (page * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
+    start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
 
     list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
-    return render_template("index.html", articles=list_posts, pages=pages, Markup=Markup)
+    return render_template("index.html", articles=list_posts, page_selected=int(page_selected), pages=pages, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
