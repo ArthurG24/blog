@@ -58,8 +58,8 @@
     {% endfor %}
 
     <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
-    {% if page_selected < nb_pages - end and displayed < total|length %}
-        {% if page_selected < nb_pages - (end +1) %}    
+    {% if page_selected < total|length - end and displayed < total|length %}
+        {% if page_selected < total|length - (end +1) %}    
             <span>...</span>
         {% endif %}
         <a href="/?page={{ total[-1] }}" class="page-buttons">{{ total[-1] }}</a>

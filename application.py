@@ -1,40 +1,33 @@
 from datetime import datetime
 import os
 from PIL import Image
-import math
 
 from flask import render_template, request, Markup
 
 from init import app
-from helpers import allowed_file, countup_filename
+from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED
 from models import db, Article
 
-ARTICLES_PER_PAGE = 3
 
 @app.route("/")
 def index():
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    nb_articles = Article.query.filter_by(posted=True).count()  # Get the total number of articles published
-    nb_pages = math.ceil(nb_articles / ARTICLES_PER_PAGE)  # Calculate enough pages to fit all the articles
-    total_pages = range(1, nb_pages + 1)  # This list represent the total of pages containing all the published articles
+    total_pages, nb_pages = page_list() # A list of pages and its length
+
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
-
-    displayed = 3  # Numbers of page buttons to display at the bottom
     
     # We use the two variables below to display the correct amount of buttons on each side of the page selected
-    start_butt = math.ceil(displayed/2)
-    end_butt = math.floor(displayed/2)
-
+    start_butt, end_butt = buttons_range()
 
     # In the following conditions, the variable pages represents the nb of pages displayed each time (therefore, in most case it wont't be the total nb of pages)
     # If the page selected is getting close to the beginning, we still display n buttons so we have more to the right
     if page_selected < start_butt:  
-        pages = total_pages[:displayed]
+        pages = total_pages[:BUTTONS_DISPLAYED]
     
     # If the page selected is getting close to the end, we still display n buttons so we have more to the left
     elif page_selected > nb_pages - end_butt:  
-        pages = total_pages[nb_pages - displayed:]
+        pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
 
     # Else, we have the page selected right in the middle
     else:
@@ -44,7 +37,7 @@ def index():
     list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("index.html", articles=list_posts, page_selected=int(page_selected), 
-                            pages=pages, displayed=displayed, total=total_pages, start=start_butt, end=end_butt, nb_pages=nb_pages, Markup=Markup)
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start=start_butt, end=end_butt, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
