@@ -37,7 +37,7 @@ def index():
     list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("index.html", articles=list_posts, page_selected=int(page_selected), 
-                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start=start_butt, end=end_butt, Markup=Markup)
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
@@ -91,3 +91,12 @@ def create():
 def article():
     article = Article.query.filter_by(id=request.args.get("id")).first()
     return render_template("display_article.html", article=article, Markup=Markup)
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+
+    else:
+        pass

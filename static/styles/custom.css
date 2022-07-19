@@ -28,6 +28,19 @@
     .new-header {
         height: 150px !important;
     }
+
+    .login-button {
+        margin-left: 50px !important;
+    }
+    
+    .login-admin label[for=username], .login-admin label[for=password] {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .login-admin .username-input, .login-admin .password-input {
+        float: none !important;
+    }
 }
 
 @media (max-width: 1100px) {
@@ -418,6 +431,42 @@ input[type=Date] {
     margin: 5px;
     border-radius: 5px;
     pointer-events: none;
+}
+
+.login-admin {
+    width: 500px;
+    margin: auto;
+    margin-top: 70px;
+    margin-bottom: 100px;
+}
+
+.login-admin .username, .login-admin .password {
+    width: 400px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.login-admin label[for=username], .login-admin label[for=password] {
+    font-weight: bold;
+    padding-top: 2px;
+}
+
+.login-admin .username-input, .login-admin .password-input {
+    float: right;
+    width: 250px;
+    background-color: #dfdfdf;
+    display: block;
+}
+
+.login-button {
+    width: 150px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.login-button input[type="submit"] {
+    width: 100%;
+    margin: auto;
 }
 
 footer {

@@ -41,9 +41,9 @@
 <div class="pages">
     
     <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
-    {% if page_selected > start and displayed < total|length %}
+    {% if page_selected > start_butt and displayed < total|length %}
         <a href="/?page={{ total[0] }}" class="page-buttons">{{ total[0] }}</a>
-            {% if page_selected > start + 1 %}    
+            {% if page_selected > start_butt + 1 %}    
                 <span>...</span>
             {% endif %}
     {% endif %}
@@ -58,8 +58,8 @@
     {% endfor %}
 
     <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
-    {% if page_selected < total|length - end and displayed < total|length %}
-        {% if page_selected < total|length - (end +1) %}    
+    {% if page_selected < total|length - end_butt and displayed < total|length %}
+        {% if page_selected < total|length - (end_butt +1) %}    
             <span>...</span>
         {% endif %}
         <a href="/?page={{ total[-1] }}" class="page-buttons">{{ total[-1] }}</a>

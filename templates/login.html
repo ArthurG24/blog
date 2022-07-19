@@ -1,0 +1,24 @@
+{% extends "layout.html " %}
+
+{% block body %}
+
+<div class="login-admin clearfix">
+    <form action="/login" method="post">
+        <div class="username">
+            <label for="username">Identifiant :</label>
+            <input type="text" required class="username-input" name="username">
+        </div>
+        
+        <div class="password">
+            <label for="password">Mot de passe :</label>
+            <input type="password" required class="password-input" name="password">
+        </div>
+        
+        <div class="login-button">
+            <input type="submit" value="Se connecter">
+        </div>
+    </form>
+    
+</div>
+
+{% endblock %}
