@@ -2,11 +2,30 @@ from datetime import datetime
 import os
 from PIL import Image
 
-from flask import render_template, request, Markup
+from flask import Flask, render_template, request, Markup
+from flask_sqlalchemy import SQLAlchemy
 
-from init import app
+db = SQLAlchemy()
+
 from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED
-from models import db, Article
+from models import Article, Admin
+
+
+def create_app():
+    app = Flask(__name__, static_folder="./static", template_folder="./templates")
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
+    app.config['TEMPLATES_AUTO_RELOAD'] = True  # Used for development - check for changes in templates and static on reload
+    app.config['UPLOAD_FOLDER'] = 'static/img/thumbs'
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db.init_app(app)
+    return app
+
+app = create_app()
+app.app_context().push()
+
 
 
 @app.route("/")
@@ -99,4 +118,5 @@ def login():
         return render_template("login.html")
 
     else:
-        pass
+        username = request.form.get("username")
+        password = request.form.get("password")
