@@ -1,4 +1,4 @@
-from models import Article
+from models import Article, Admin
 import os
 import math
 

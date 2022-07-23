@@ -4,20 +4,27 @@
 
 <div class="login-admin clearfix">
     <form action="/login" method="post">
-        <div class="username">
-            <label for="username">Identifiant :</label>
-            <input type="text" required class="username-input" name="username">
+        <div class="identifier">
+            <label for="identifier">Identifiant :</label>
+            <input type="text" required class="identifier-input" placeholder="Identifiant ou e-mail" name="identifier">
         </div>
         
         <div class="password">
             <label for="password">Mot de passe :</label>
-            <input type="password" required class="password-input" name="password">
+            <input type="password" required class="password-input" placeholder="Mot de passe" name="password">
         </div>
         
         <div class="login-button">
             <input type="submit" value="Se connecter">
         </div>
     </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     
 </div>
 

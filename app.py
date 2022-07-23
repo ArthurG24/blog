@@ -2,13 +2,31 @@ from datetime import datetime
 import os
 from PIL import Image
 
-from flask import Flask, render_template, request, Markup
+from flask import Flask, render_template, request, session, redirect, flash, Markup
+from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash as hash, check_password_hash as check_hash
 
 db = SQLAlchemy()
 
 from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED
 from models import Article, Admin
+
+# To execute from the terminal
+def create_admin():
+    admin = Admin(
+        username = input("Username: "),
+        author_name = input("Author name: "),
+        email = input("Email: "),
+        pwhash = hash(input("Password: ")),
+    )
+
+    db.session.add(admin)
+    db.session.commit()
+
+    print(admin.username)
+    print(admin.author_name)
+    print(admin.pwhash)
 
 
 def create_app():
@@ -19,6 +37,10 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = 'static/img/thumbs'
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SESSION_PERMANENT"] = False
+    app.config["SESSION_TYPE"] = "filesystem"
+
+    Session(app)
 
     db.init_app(app)
     return app
@@ -61,10 +83,7 @@ def index():
 
 @app.route("/create", methods=["POST", "GET"])
 def create():
-    if request.method == "GET":
-        return render_template("create.html")
-
-    else:
+    if request.method == "POST":
         pic = request.files["thumb"]
         if pic and allowed_file(pic.filename):
             filename = countup_filename(pic.filename)
@@ -104,6 +123,9 @@ def create():
         db.session.commit()
 
         return "Added"
+    
+    return render_template("create.html")
+        
 
 
 @app.route("/article")
@@ -114,9 +136,21 @@ def article():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    if request.method == "GET":
-        return render_template("login.html")
+    if request.method == "POST":
+        identifier = request.form.get("identifier")
 
-    else:
-        username = request.form.get("username")
-        password = request.form.get("password")
+        if "@" in identifier:
+            admin = Admin.query.filter_by(email=identifier).first()
+        else:
+            admin = Admin.query.filter_by(username=identifier).first()
+
+        if admin and check_hash(admin.pwhash, request.form.get("password")):  # If username has been found and password correct
+            session["user"] = admin  # then in Jinja, session.user.author_name will work
+            # return redirect("/admin")
+            return "ok"
+
+        else:
+            flash("Utilisateur ou mot de passe invalide", "info")
+            return redirect("/login")
+
+    return render_template("login.html")

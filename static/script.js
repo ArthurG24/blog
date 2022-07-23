@@ -1,6 +1,8 @@
 tinymce.init({
     selector: 'textarea',
-    plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+    // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+    // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+    plugins: 'table',
     toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
     toolbar_mode: 'floating',
     tinycomments_mode: 'embedded',

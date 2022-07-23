@@ -33,12 +33,12 @@
         margin-left: 50px !important;
     }
     
-    .login-admin label[for=username], .login-admin label[for=password] {
+    .login-admin label[for=identifier], .login-admin label[for=password] {
         display: block;
         margin-bottom: 5px;
     }
     
-    .login-admin .username-input, .login-admin .password-input {
+    .login-admin .identifier-input, .login-admin .password-input {
         float: none !important;
     }
 }
@@ -440,18 +440,18 @@ input[type=Date] {
     margin-bottom: 100px;
 }
 
-.login-admin .username, .login-admin .password {
+.login-admin .identifier, .login-admin .password {
     width: 400px;
     margin: auto;
     margin-top: 20px;
 }
 
-.login-admin label[for=username], .login-admin label[for=password] {
+.login-admin label[for=identifier], .login-admin label[for=password] {
     font-weight: bold;
     padding-top: 2px;
 }
 
-.login-admin .username-input, .login-admin .password-input {
+.login-admin .identifier-input, .login-admin .password-input {
     float: right;
     width: 250px;
     background-color: #dfdfdf;
@@ -467,6 +467,14 @@ input[type=Date] {
 .login-button input[type="submit"] {
     width: 100%;
     margin: auto;
+}
+
+.login-admin .error-message {
+    color: red;
+    font-size: 1.2em;
+    width: 350px;
+    margin: auto;
+    margin-top: 15px;
 }
 
 footer {
