@@ -17,6 +17,19 @@
       <input type="file" accept="image/*" required name="thumb" id="thumb" class="file-input">
     </div>
 
+    <div class="category-field">
+      <label for="category" class="categories-label">Catégorie :</label>
+      <select name="category" class="categories-input">
+        {% for category in categories %}
+          {% if category == "Divers" %}
+            <option selected value="{{ category }}">{{ category }}</option>
+          {% else %}
+            <option value="{{ category }}">{{ category }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+
     <div class="text-input">
       <textarea name="text" required placeholder="Commencez à écrire !">
       </textarea>

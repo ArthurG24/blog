@@ -33,13 +33,17 @@
         margin-left: 50px !important;
     }
     
-    .login-admin label[for=identifier], .login-admin label[for=password] {
+    .admin .identifier-label, .admin .password-label {
         display: block;
         margin-bottom: 5px;
     }
     
-    .login-admin .identifier-input, .login-admin .password-input {
+    .admin .identifier-input, .admin .password-input {
         float: none !important;
+    }
+
+    .change-password {
+        margin: auto;
     }
 }
 
@@ -81,6 +85,7 @@ a:active {
     border-radius: 25px 25px 0px 0px;
     margin-top: 5px;
     box-shadow: 1px 1px 5px black;
+    cursor: pointer;
 }
 
 .nav {
@@ -196,7 +201,7 @@ a:active {
     box-shadow: 0px 0px 5px 4px #0d3e57;
 }
 
-.article .text {
+.article .text, .edit-article .text {
     font-size: 1.2em;
     padding: 17px 15px 10px 20px;
     letter-spacing: 0.5px;
@@ -225,11 +230,29 @@ a:active {
     line-height: 1.6em;
 }
 
-.article {
+.article, .edit-article {
     min-height: 350px;
 }
 
-.article, .aside {
+.edit-article {
+    min-height: 200px !important;
+}
+
+.edit-button {
+    float: right;
+    margin-right: 20px;
+    margin-top: 8px;
+    color: #f8a061;
+    font-weight: bold;
+    text-decoration: none;
+    border: solid 1px #f8a061;
+    background-color: #2e3b40;
+    padding: 3px 12px;
+    border: solid 2px #979591;
+    border-radius: 5px;
+}
+
+.article, .aside, .edit-article {
     box-sizing: border-box;
     background-color: #03141d;
     margin-top: 20px;
@@ -252,7 +275,7 @@ a:active {
     margin-top: 40px;
 }
 
-.title-label {
+.title-label, .categories-label {
     margin-left: 15px;
 }
 
@@ -291,7 +314,7 @@ a:active {
 }
 
 .text-input {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 @media (max-width: 1400px) {
@@ -310,7 +333,11 @@ a:active {
     }
 
     .title-field {
-        display: inline;
+        float: left;
+    }
+
+    .category-field {
+        display: block;
         float: left;
     }
 
@@ -366,6 +393,17 @@ a:active {
     border-right: 2px solid #CCCCCC;
     border-bottom: 2px solid #CCCCCC;
     border-left: 2px solid #979797;
+}
+
+.categories-input {
+    margin: 10px 50px 20px 5px;
+    background-color: #03141d;
+    color: #cfcbc5;
+    padding: 5px;
+    font-size: 1em;
+    border-radius: 6px;
+    font-weight: bold;
+    width: 350px;
 }
 
 .finalize {
@@ -433,25 +471,25 @@ input[type=Date] {
     pointer-events: none;
 }
 
-.login-admin {
+.admin {
     width: 500px;
     margin: auto;
     margin-top: 70px;
     margin-bottom: 100px;
 }
 
-.login-admin .identifier, .login-admin .password {
+.admin .identifier, .admin .password {
     width: 400px;
     margin: auto;
     margin-top: 20px;
 }
 
-.login-admin label[for=identifier], .login-admin label[for=password] {
+.admin .identifier-label, .admin .password-label {
     font-weight: bold;
     padding-top: 2px;
 }
 
-.login-admin .identifier-input, .login-admin .password-input {
+.admin .identifier-input, .admin .password-input {
     float: right;
     width: 250px;
     background-color: #dfdfdf;
@@ -469,13 +507,61 @@ input[type=Date] {
     margin: auto;
 }
 
-.login-admin .error-message {
-    color: red;
+.error {
+    color: rgb(255, 69, 69);
     font-size: 1.2em;
     width: 350px;
     margin: auto;
     margin-top: 15px;
+    text-align: center;
 }
+
+.info {
+    color: rgb(42, 169, 80);
+    font-size: 1.2em;
+    width: 350px;
+    margin: auto;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.admin-buttons {
+    background-color: #03141d;
+    color: #cfcbc5;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 2px 6px 2px 6px;
+    border-top: 2px solid #CCCCCC;
+    border-right: 2px solid #979797;
+    border-bottom: 2px solid #979797;
+    border-left: 2px solid #CCCCCC;
+    margin-bottom: 10px;
+    text-decoration: none;
+    transition: none !important;
+    cursor: default;
+    display: block;
+    width: 250px;
+    margin: auto;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.admin-buttons:active {
+    border-top: 2px solid #979797;
+    border-right: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC;
+    border-left: 2px solid #979797;
+    color: #cfcbc5;
+}
+
+.admin-buttons:hover {
+    color: #cfcbc5;
+}
+
+.change-password {
+    width: 500px !important;
+}
+
 
 footer {
     font-size: 1.1em;

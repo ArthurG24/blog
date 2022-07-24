@@ -2,6 +2,7 @@ from models import Article, Admin
 import os
 import math
 
+CATEGORIES = ["Divers", "Développement personnel", "Hi-tech", "Voyages"]
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 ARTICLES_PER_PAGE = 10
 BUTTONS_DISPLAYED = 3 # Numbers of page buttons to display at the bottom of index

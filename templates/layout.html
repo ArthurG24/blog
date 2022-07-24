@@ -14,11 +14,11 @@
   <body>
     <div class="container">
 
-        <div class="p-5 new-header"></div>
+        <div onclick="location.href='/';" class="p-5 new-header"></div>
 
         <ul class="list-inline nav">
             <div class="nav-block">
-                <li class="list-inline-item"><a href="#">Developpement personel
+                <li class="list-inline-item"><a href="#">Developpement personnel
                 </a></li><li class="list-inline-item"><a href="#">Hi-tech
                 </a></li><li class="list-inline-item"><a href="#">Voyages
                 </a></li><li class="list-inline-item"><a href="#">Divers
@@ -33,7 +33,11 @@
         </div>
 
         <div class="container">
-            <footer>Copyright &copy; 2022 Cool Morning - <a href="/login">Admin</a></footer>
+            {% if session.user == None %}
+              <footer>Copyright &copy; 2022 Cool Morning - <a href="/login">Se connecter</a></footer>
+            {% else %}
+              <footer>Copyright &copy; 2022 Cool Morning - <a href="/admin">Admin</a> - <a href="/logout">Se déconnecter</a></footer>
+            {% endif %}
         </div>
         
     </div>

@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash as hash, check_password_has
 
 db = SQLAlchemy()
 
-from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED
+from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED, CATEGORIES
 from models import Article, Admin
 
 # To execute from the terminal
@@ -102,8 +102,9 @@ def create():
                 title = request.form.get("title"),
                 text = request.form.get("text"),
                 date = date_object,
+                category = request.form.get("category"),
                 posted = False,
-                author = "Arthur",  # To do
+                author = session["user"].author_name,
                 img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
@@ -113,8 +114,9 @@ def create():
                 title = request.form.get("title"),
                 text = request.form.get("text"),
                 date = date_object,
+                category = request.form.get("category"),
                 posted = True,
-                author = "Arthur",  # To do
+                author = session["user"].author_name,
                 img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
@@ -124,9 +126,8 @@ def create():
 
         return "Added"
     
-    return render_template("create.html")
+    return render_template("create.html", categories=CATEGORIES)
         
-
 
 @app.route("/article")
 def article():
@@ -146,11 +147,74 @@ def login():
 
         if admin and check_hash(admin.pwhash, request.form.get("password")):  # If username has been found and password correct
             session["user"] = admin  # then in Jinja, session.user.author_name will work
-            # return redirect("/admin")
-            return "ok"
+
+            return redirect("/admin")
 
         else:
-            flash("Utilisateur ou mot de passe invalide", "info")
+            flash("Utilisateur ou mot de passe invalide", "error")
             return redirect("/login")
 
     return render_template("login.html")
+
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
+
+@app.route("/password", methods=["POST", "GET"])
+def modify_password():
+    if request.method == "POST":
+        old = request.form.get("old_password")
+        new = request.form.get("new_password")
+        
+        admin = Admin.query.filter_by(id=session["user"].id).first()
+
+        if check_hash(admin.pwhash, old):
+            admin.pwhash = hash(new)
+            db.session.commit()
+            flash("Mot de passe changé !", "info")
+            return redirect("/password")
+        else:
+            flash("Ancien mot de passe invalide", "error")
+            return redirect("/password")
+            
+    return render_template("modify_password.html")
+
+
+@app.route("/logout")
+def logout():
+    session["user"] = None
+
+    return redirect("/")
+
+
+@app.route("/list_edit")
+def list_edit():
+    page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
+    total_pages, nb_pages = page_list() # A list of pages and its length
+
+    # The start variable is used to query the db starting with the right article for each page
+    start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
+    
+    # We use the two variables below to display the correct amount of buttons on each side of the page selected
+    start_butt, end_butt = buttons_range()
+
+    # In the following conditions, the variable pages represents the nb of pages displayed each time (therefore, in most case it wont't be the total nb of pages)
+    # If the page selected is getting close to the beginning, we still display n buttons so we have more to the right
+    if page_selected < start_butt:  
+        pages = total_pages[:BUTTONS_DISPLAYED]
+    
+    # If the page selected is getting close to the end, we still display n buttons so we have more to the left
+    elif page_selected > nb_pages - end_butt:  
+        pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
+
+    # Else, we have the page selected right in the middle
+    else:
+        pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
+
+    # For each page, query the database, starting with the right article for each page
+    list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+
+    return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)

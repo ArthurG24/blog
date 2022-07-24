@@ -5,6 +5,7 @@ class Article(db.Model):
     title = db.Column(db.String(100), nullable=False)
     text = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
+    category = db.Column(db.String(50), nullable=False)
     posted = db.Column(db.Boolean, nullable=False)
     author = db.Column(db.String(50), nullable=False)
     img = db.Column(db.String, nullable=False)
