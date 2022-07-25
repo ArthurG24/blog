@@ -96,8 +96,9 @@ def create():
 
         date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%d")
 
+        date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
+
         if request.form["submit_button"] == "Enregistrer":
-            date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
             article = Article(
                 title = request.form.get("title"),
                 text = request.form.get("text"),
@@ -109,7 +110,6 @@ def create():
             )
 
         else:
-            date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
             article = Article(
                 title = request.form.get("title"),
                 text = request.form.get("text"),
@@ -218,3 +218,40 @@ def list_edit():
 
     return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
                             pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)
+
+
+@app.route("/edit_article", methods=["POST", "GET"])
+def edit_article():
+    if request.method == "POST":
+
+        article = Article.query.filter_by(id=request.form.get("id")).first()
+
+        pic = request.files["thumb"]
+        if pic and allowed_file(pic.filename):
+            filename = os.path.basename(article.img) # extract filename from path
+            img = Image.open(pic)
+            img.thumbnail([500,500], Image.ANTIALIAS)
+            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            article.img = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            
+        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%d")
+        date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
+        
+        article.title = request.form.get("title")
+        article.text = request.form.get("text")
+        article.date = date_object
+        article.category = request.form.get("category")
+
+        if request.form["submit_button"] == "Enregistrer":
+            article.posted = False
+        else:
+            article.posted = True
+
+        db.session.commit()
+
+        return "updated"
+
+    article = Article.query.filter_by(id=request.args.get("id")).first()
+
+    return render_template("edit_article.html", categories=CATEGORIES, article=article)

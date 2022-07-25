@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="create-article clearfix">
+
+  <form action="/edit_article" method="POST" enctype="multipart/form-data">
+
+    <div class="title-field">
+      <label for="title" class="title-label">Titre : </label>
+      <input type="text" required name="title" class="title-input" maxlength="100" value="{{ article.title }}">
+    </div>
+
+    <div class="file-upload">
+      <img src="{{ article.img }}" id="img-preview-edit" alt="thumbnail">
+      <div id="img-preview"></div>
+      <label for="thumb" class="file-label">Choisir Miniature</label>
+      <input type="file" accept="image/*" name="thumb" id="thumb" class="file-input">
+    </div>
+
+    <div class="category-field">
+      <label for="category" class="categories-label">Catégorie :</label>
+      <select name="category" class="categories-input">
+        {% for category in categories %}
+          {% if category == article.category %}
+            <option selected value="{{ category }}">{{ category }}</option>
+          {% else %}
+            <option value="{{ category }}">{{ category }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="text-input">
+      <textarea name="text" required placeholder="Commencez à écrire !">
+        {{ article.text }}
+      </textarea>
+    </div>
+
+    <div class="finalize">
+      <label for="date">Date : </label>
+      <input type="date" required name="date" value="{{ article.date.strftime('%Y-%m-%d') }}">
+
+      <div class="finalize-buttons">
+        <input type="submit" value="Enregistrer" name="submit_button">
+        <input type="submit" value="Poster" name="submit_button">
+        <input type="hidden" value="{{ article.id }}" name="id">
+      </div>
+    </div>
+
+  </form>
+  
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js')}}"></script>
+
+{% endblock %}
