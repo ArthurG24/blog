@@ -10,7 +10,12 @@
         <div class="article">
             
             <div class="article-header">
-                <h2><a href="/article?id={{ article.id }}#begin">{{ article.title }}</a></h2>
+                <h2>
+                    <a href="/article?id={{ article.id }}#begin">{{ article.title }}</a>
+                    {% if session.user != None%}
+                        <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
+                    {% endif %}
+                </h2>
                 <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
             </div>
             

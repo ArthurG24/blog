@@ -214,7 +214,7 @@ def list_edit():
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    list_posts = Article.query.order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
                             pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)

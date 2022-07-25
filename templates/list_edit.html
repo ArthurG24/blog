@@ -10,8 +10,16 @@
         <div class="edit-article">
             
             <div class="article-header">
-                <h2><a href="/article?id={{ article.id }}#begin">{{ article.title }}</a></h2>
-                <a href="/edit_article?id={{ article.id }}" class="edit-button">Editer</a>
+                <h2>
+                    <a href="/article?id={{ article.id }}#begin">{{ article.title }}</a>
+                    <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
+                </h2>
+                {% if article.posted %}
+                    <p class="status">Posté</p>
+                {% else %}
+                    <p class="status">Archivé</p>
+                {% endif %}
+                <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
             </div>
             
             <div class="text">

@@ -239,10 +239,11 @@ a:active {
 }
 
 .edit-button {
-    float: right;
-    margin-right: 20px;
-    margin-top: 8px;
-    color: #f8a061;
+    position: absolute;
+    color: #f8a061 !important;
+    margin-left: 20px;
+    margin-top: 3px !important;
+    font-size: 0.6em;
     font-weight: bold;
     text-decoration: none;
     border: solid 1px #f8a061;
@@ -250,6 +251,15 @@ a:active {
     padding: 3px 12px;
     border: solid 2px #979591;
     border-radius: 5px;
+}
+
+.edit-button:hover {
+    background-color: #03141d;
+    color: #cfcbc5;
+}
+
+.edit-button:active {
+    background-color: #1d2529;
 }
 
 .article, .aside, .edit-article {
