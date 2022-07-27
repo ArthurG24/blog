@@ -32,8 +32,13 @@
     </div>
     <div class="col-md-3">
         <div class="aside">
-            <h2>Titre</h2>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia laboriosam distinctio eum libero, eius, iure tempore quae odit cupiditate, id animi sint inventore voluptate alias asperiores porro. Dolorum, excepturi architecto!</p>
+            <h2>Citation</h2>
+            <p class="quote-block">
+                <span class="quote-text">{{ Markup(quote.text) }}</span>
+                {% if quote.author %}
+                    <p class="quote-author">{{ quote.author }}</p>
+                {% endif %}
+            </p>
         </div>
         <div class="aside">
             <h2>Titre</h2>

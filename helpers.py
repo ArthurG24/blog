@@ -20,8 +20,16 @@ def countup_filename(filename):
     return str(nb_rows).zfill(4) + extension
 
 
-def page_list():
-    nb_articles = Article.query.filter_by(posted=True).count()  # Get the total number of articles published
+def page_list(status):
+    # Get the total number of articles depending on the status
+    if status == "both":
+        nb_articles = Article.query.count()  
+    elif status == "posted":
+        nb_articles = Article.query.filter_by(posted=True).count()
+    else:
+        nb_articles = Article.query.filter_by(posted=False).count()
+
+
     nb_pages = math.ceil(nb_articles / ARTICLES_PER_PAGE)  # Calculate enough pages to fit all the articles
     total_pages = range(1, nb_pages + 1)  # This list represent the total of pages containing all the published articles
 

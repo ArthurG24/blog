@@ -9,7 +9,21 @@
         <div class="article" id="begin">
             
             <div class="article-header">
-                <h2>{{ article.title }}</h2>
+                <h2>    
+                    {{ article.title }}
+                    {% if session.user != None%}
+                        <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
+                    {% endif %}
+                </h2>
+                
+                {% if session.user != None%}
+                    {% if article.posted %}
+                        <p class="status">Posté</p>
+                    {% else %}
+                        <p class="status">Archivé</p>
+                    {% endif %}
+                {% endif %}
+
                 <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
             </div>
             

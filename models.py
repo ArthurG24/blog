@@ -17,3 +17,9 @@ class Admin(db.Model):
     email = db.Column(db.String(50), nullable=False)
     author_name = db.Column(db.String(50), nullable=False)
     pwhash = db.Column(db.String(100), nullable=False)
+
+
+class Quote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(50))

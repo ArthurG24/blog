@@ -2,15 +2,16 @@ from datetime import datetime
 import os
 from PIL import Image
 
-from flask import Flask, render_template, request, session, redirect, flash, Markup
+from flask import Flask, render_template, request, session, redirect, flash, url_for, Markup
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from werkzeug.security import generate_password_hash as hash, check_password_hash as check_hash
 
 db = SQLAlchemy()
 
 from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED, CATEGORIES
-from models import Article, Admin
+from models import Article, Admin, Quote
 
 # To execute from the terminal
 def create_admin():
@@ -53,7 +54,7 @@ app.app_context().push()
 @app.route("/")
 def index():
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list() # A list of pages and its length
+    total_pages, nb_pages = page_list("posted") # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
@@ -76,13 +77,18 @@ def index():
 
     # For each page, query the database, starting with the right article for each page
     list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    quote = Quote.query.order_by(func.random()).first()
 
     return render_template("index.html", articles=list_posts, page_selected=int(page_selected), 
-                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, quote=quote, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
 def create():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+    
     if request.method == "POST":
         pic = request.files["thumb"]
         if pic and allowed_file(pic.filename):
@@ -109,6 +115,8 @@ def create():
                 img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
+            flash("Article archivé", "info-2")
+
         else:
             article = Article(
                 title = request.form.get("title"),
@@ -120,11 +128,13 @@ def create():
                 img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
+            flash("Article posté", "info")
+
 
         db.session.add(article)
         db.session.commit()
 
-        return "Added"
+        return redirect("/create")
     
     return render_template("create.html", categories=CATEGORIES)
         
@@ -159,11 +169,19 @@ def login():
 
 @app.route("/admin")
 def admin():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+    session["lookup_edit"] = "both"  # Used for query articles by status, either posted, archived or both
     return render_template("admin.html")
 
 
 @app.route("/password", methods=["POST", "GET"])
 def modify_password():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+
     if request.method == "POST":
         old = request.form.get("old_password")
         new = request.form.get("new_password")
@@ -189,10 +207,19 @@ def logout():
     return redirect("/")
 
 
-@app.route("/list_edit")
+@app.route("/list_edit", methods=["POST", "GET"])
 def list_edit():
+    
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+
+    if request.method == "POST":
+        session["lookup_edit"] = request.form.get("status")
+        return redirect("/list_edit")
+
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list() # A list of pages and its length
+    total_pages, nb_pages = page_list(session["lookup_edit"])  # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
@@ -214,14 +241,23 @@ def list_edit():
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    list_posts = Article.query.order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    if session["lookup_edit"] == "both":
+        list_posts = Article.query.order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    elif session["lookup_edit"] == "posted":
+        list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    else:
+        list_posts = Article.query.filter_by(posted=False).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
-                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup, zip=zip)
 
 
 @app.route("/edit_article", methods=["POST", "GET"])
 def edit_article():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+
     if request.method == "POST":
 
         article = Article.query.filter_by(id=request.form.get("id")).first()
@@ -245,13 +281,41 @@ def edit_article():
 
         if request.form["submit_button"] == "Enregistrer":
             article.posted = False
+            flash("Article archivé", "info-2")
         else:
             article.posted = True
+            flash("Article posté", "info")
 
         db.session.commit()
 
-        return "updated"
+        return redirect(url_for("edit_article", id=article.id))
 
     article = Article.query.filter_by(id=request.args.get("id")).first()
 
     return render_template("edit_article.html", categories=CATEGORIES, article=article)
+
+
+@app.route("/quote", methods=["POST", "GET"])
+def quote():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+
+    if request.method == "POST":
+        if request.form.get("author"):
+            quote = Quote(
+                author = request.form.get("author"),
+                text = request.form.get("text")
+            )
+        else:
+            quote = Quote(text = request.form.get("text"))
+
+        db.session.add(quote)
+        db.session.commit()
+
+        flash("Citation postée !", "info")
+
+        return redirect("/quote")
+
+    
+    return render_template("quote.html")

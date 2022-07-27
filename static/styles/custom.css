@@ -144,6 +144,10 @@ a:active {
     text-decoration: none;
 }
 
+.article-header h2 {
+    color: aliceblue;
+}
+
 .article-header h2 a:hover {
     color: #e13e1e;
     transition: 0.3s;
@@ -167,7 +171,7 @@ a:active {
 .read-more a {
     font-weight: 600;
     font-style: italic;
-    color: #f8a061 !important;
+    color: #c5472e !important;
     text-decoration: none;
 }
 
@@ -186,7 +190,7 @@ a:active {
     font-weight: bolder;
     border-bottom: 3px solid #c5472e;
     width: 200px;
-    margin: 10px 0px 0px 30px;
+    margin: 10px 0px 5px 30px;
     padding-left: 20px;
     font-size: 1.6em;
 }
@@ -230,6 +234,16 @@ a:active {
     line-height: 1.6em;
 }
 
+.quote-author {
+    margin-top: -15px;
+}
+
+.quote-author {
+    text-align: right;
+    font-style: italic;
+    text-decoration: underline;
+}
+
 .article, .edit-article {
     min-height: 350px;
 }
@@ -271,6 +285,10 @@ a:active {
     box-shadow: 1px 1px 5px black;
 }
 
+.aside {
+    height: 300px;
+}
+
 .col-md-3 {
     padding:0;
 }
@@ -281,6 +299,12 @@ a:active {
 
 .create-article {
     width: 75%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.create-quote {
+    width: 55%;
     margin: auto;
     margin-top: 40px;
 }
@@ -334,8 +358,13 @@ a:active {
     border: #6695ad 2px dashed;
 }
 
+
 .text-input {
     margin-top: 20px;
+}
+
+.quote {
+    margin-top: 60px !important;
 }
 
 @media (max-width: 1400px) {
@@ -372,7 +401,7 @@ a:active {
         display: block !important;
     }
 
-    .create-article {
+    .create-article, .create-quote {
         width: 90%;
     }
 }
@@ -383,7 +412,7 @@ a:active {
         margin-top: 0px !important;
     }
 
-    .create-article {
+    .create-article, .create-quote {
         width: 100%;
     }
 }
@@ -425,6 +454,20 @@ a:active {
     border-radius: 6px;
     font-weight: bold;
     width: 350px;
+}
+
+.status-lookup {
+    margin: 20px 30px -10px 5px;
+}
+
+.status-input {
+    background-color: #03141d;
+    color: #cfcbc5;
+    padding: 5px;
+    font-size: 1em;
+    border-radius: 6px;
+    font-weight: bold;
+    width: 250px;
 }
 
 .finalize {
@@ -543,6 +586,35 @@ input[type=Date] {
     width: 350px;
     margin: auto;
     margin-top: 15px;
+    text-align: center;
+}
+
+.quote-posted {
+    position: absolute;
+    margin-top: -40px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.info-2 {
+    color: rgb(221, 202, 1);
+    font-size: 1.2em;
+    width: 350px;
+    margin: auto;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.posted {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    margin-top: -20px;
     text-align: center;
 }
 

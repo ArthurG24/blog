@@ -6,6 +6,22 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
 
+        <div class="status-lookup">
+            <form action="/list_edit" method="POST">
+                <label for="status" class="categories-label">Articles :</label>
+                <select name="status" class="status-input">
+                    {% for status, display in zip(["both", "posted", "archived"], ["Tous", "Publiés", "Archivés"]) %}
+                        {% if status == session["lookup_edit"] %}
+                            <option selected value="{{ status }}">{{ display }}</option>
+                        {% else %}
+                            <option value="{{ status }}">{{ display }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="submit" value="OK" name="submit_button">
+            </form>
+        </div>
+
         {% for article in articles %}
         <div class="edit-article">
             
@@ -38,7 +54,7 @@
     
     <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
     {% if page_selected > start_butt and displayed < total|length %}
-        <a href="/?page={{ total[0] }}" class="page-buttons">{{ total[0] }}</a>
+        <a href="/list_edit?page={{ total[0] }}" class="page-buttons">{{ total[0] }}</a>
             {% if page_selected > start_butt + 1 %}    
                 <span>...</span>
             {% endif %}
@@ -47,9 +63,9 @@
     <!-- Show the buttons for each page passed by the application.py -->
     {% for page in pages %}
         {% if page == page_selected %}
-            <a href="/?page={{ page }}" class="page-buttons-selected">{{ page }}</a>
+            <a href="/list_edit?page={{ page }}" class="page-buttons-selected">{{ page }}</a>
         {% else %}
-            <a href="/?page={{ page }}" class="page-buttons">{{ page }}</a>
+            <a href="/list_edit?page={{ page }}" class="page-buttons">{{ page }}</a>
         {% endif %}
     {% endfor %}
 
@@ -58,7 +74,7 @@
         {% if page_selected < total|length - (end_butt +1) %}    
             <span>...</span>
         {% endif %}
-        <a href="/?page={{ total[-1] }}" class="page-buttons">{{ total[-1] }}</a>
+        <a href="/list_edit?page={{ total[-1] }}" class="page-buttons">{{ total[-1] }}</a>
     {% endif %}
 
 </div>

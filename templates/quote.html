@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <p class="{{ category }} quote-posted">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="create-quote clearfix">
+
+
+  <form class="quote" action="/quote" method="POST">
+
+    <div >
+          <textarea name="text" required placeholder="Ecrivez une citation !">
+        </textarea>
+    </div>
+    
+    <div class="title-field">
+      <label for="title" class="title-label">Auteur : </label>
+      <input type="text" name="author" class="title-input" maxlength="100">
+    </div>
+
+    <div class="finalize">
+
+      <div class="finalize-buttons">
+        <input type="submit" value="Poster" name="submit_button">
+      </div>
+    </div>
+
+  </form>
+  
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js')}}"></script>
+
+{% endblock %}
