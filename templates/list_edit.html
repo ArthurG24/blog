@@ -10,7 +10,7 @@
             <form action="/list_edit" method="POST">
                 <label for="status" class="categories-label">Articles :</label>
                 <select name="status" class="status-input">
-                    {% for status, display in zip(["both", "posted", "archived"], ["Tous", "Publiés", "Archivés"]) %}
+                    {% for status, display in zip(["all", "posted", "archived", "scheduled"], ["Tous", "Publiés", "Archivés", "Programmés"]) %}
                         {% if status == session["lookup_edit"] %}
                             <option selected value="{{ status }}">{{ display }}</option>
                         {% else %}
@@ -32,10 +32,14 @@
                 </h2>
                 {% if article.posted %}
                     <p class="status">Posté</p>
-                {% else %}
+                    <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
+                {% elif article.posted == False and article.scheduled == False %}
                     <p class="status">Archivé</p>
+                    <p>Enregistré par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
+                {% else %}
+                    <p class="status">Programmé</p>
+                    <p>Programmé par {{ article.author }} pour le {{ article.date.strftime('%d/%m/%Y') }}</p>
                 {% endif %}
-                <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
             </div>
             
             <div class="text">

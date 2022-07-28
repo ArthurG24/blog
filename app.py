@@ -1,6 +1,8 @@
 from datetime import datetime
 import os
 from PIL import Image
+from apscheduler.schedulers.background import BackgroundScheduler
+from pytz import timezone
 
 from flask import Flask, render_template, request, session, redirect, flash, url_for, Markup
 from flask_session import Session
@@ -48,6 +50,28 @@ def create_app():
 
 app = create_app()
 app.app_context().push()
+
+
+
+def check_schedule():
+    with app.app_context():
+        utc = timezone("Europe/Paris")
+
+        if 15 <= datetime.now(utc).hour <= 20:
+            print("ok")
+            articles = Article.query.filter_by(scheduled=True).all()
+
+            if articles:
+                for article in articles:
+                    if article.date <= datetime.now():
+                        article.posted = True
+                        article.scheduled = False
+
+                db.session.commit()
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(check_schedule, 'interval', seconds=5)
+scheduler.start()
 
 
 
@@ -111,11 +135,26 @@ def create():
                 date = date_object,
                 category = request.form.get("category"),
                 posted = False,
+                scheduled = False,
                 author = session["user"].author_name,
                 img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
 
             flash("Article archivé", "info-2")
+
+        elif request.form["submit_button"] == "Programmer":
+            article = Article(
+                title = request.form.get("title"),
+                text = request.form.get("text"),
+                date = date_object,
+                category = request.form.get("category"),
+                posted = False,
+                scheduled = True,
+                author = session["user"].author_name,
+                img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
+            )
+
+            flash("Article programmé", "info-2")
 
         else:
             article = Article(
@@ -124,6 +163,7 @@ def create():
                 date = date_object,
                 category = request.form.get("category"),
                 posted = True,
+                scheduled = False,
                 author = session["user"].author_name,
                 img = os.path.join(app.config['UPLOAD_FOLDER'], filename),
             )
@@ -172,7 +212,7 @@ def admin():
     if session["user"] == None:
         flash("Vous devez être connecté", "error")
         return redirect("/login")
-    session["lookup_edit"] = "both"  # Used for query articles by status, either posted, archived or both
+    session["lookup_edit"] = "all"  # Used for query articles by status, either posted, archived or both
     return render_template("admin.html")
 
 
@@ -241,12 +281,14 @@ def list_edit():
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    if session["lookup_edit"] == "both":
+    if session["lookup_edit"] == "all":
         list_posts = Article.query.order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
     elif session["lookup_edit"] == "posted":
         list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
-    else:
-        list_posts = Article.query.filter_by(posted=False).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    elif session["lookup_edit"] == "scheduled":
+        list_posts = Article.query.filter_by(posted=False, scheduled=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    else:  # archived
+        list_posts = Article.query.filter_by(posted=False, scheduled=False).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
                             pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup, zip=zip)
@@ -281,8 +323,14 @@ def edit_article():
 
         if request.form["submit_button"] == "Enregistrer":
             article.posted = False
+            article.scheduled = False
             flash("Article archivé", "info-2")
+        elif request.form["submit_button"] == "Programmer":
+            article.posted = False
+            article.scheduled = True
+            flash("Article programmé", "info-2")
         else:
+            article.scheduled = False
             article.posted = True
             flash("Article posté", "info")
 

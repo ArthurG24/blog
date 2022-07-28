@@ -236,9 +236,6 @@ a:active {
 
 .quote-author {
     margin-top: -15px;
-}
-
-.quote-author {
     text-align: right;
     font-style: italic;
     text-decoration: underline;
@@ -287,6 +284,7 @@ a:active {
 
 .aside {
     height: 300px;
+    overflow: auto;
 }
 
 .col-md-3 {

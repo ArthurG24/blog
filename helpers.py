@@ -1,6 +1,7 @@
-from models import Article, Admin
+from models import Article
 import os
 import math
+
 
 CATEGORIES = ["Divers", "Développement personnel", "Hi-tech", "Voyages"]
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -22,12 +23,14 @@ def countup_filename(filename):
 
 def page_list(status):
     # Get the total number of articles depending on the status
-    if status == "both":
+    if status == "all":
         nb_articles = Article.query.count()  
     elif status == "posted":
         nb_articles = Article.query.filter_by(posted=True).count()
-    else:
-        nb_articles = Article.query.filter_by(posted=False).count()
+    elif status == "scheduled":
+        nb_articles = Article.query.filter_by(scheduled=True).count()
+    else:  # archived
+        nb_articles = Article.query.filter_by(posted=False, scheduled=False).count()
 
 
     nb_pages = math.ceil(nb_articles / ARTICLES_PER_PAGE)  # Calculate enough pages to fit all the articles
