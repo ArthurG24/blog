@@ -2,7 +2,6 @@ from datetime import datetime
 import os
 from PIL import Image
 from apscheduler.schedulers.background import BackgroundScheduler
-from pytz import timezone
 
 from flask import Flask, render_template, request, session, redirect, flash, url_for, Markup
 from flask_session import Session
@@ -12,7 +11,7 @@ from werkzeug.security import generate_password_hash as hash, check_password_has
 
 db = SQLAlchemy()
 
-from helpers import allowed_file, countup_filename, page_list, buttons_range, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED, CATEGORIES
+from helpers import allowed_file, countup_filename, page_list, page_list_quotes, buttons_range, redirect_url, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED, CATEGORIES
 from models import Article, Admin, Quote
 
 # To execute from the terminal
@@ -55,25 +54,26 @@ app.app_context().push()
 
 def check_schedule():
     with app.app_context():
-        utc = timezone("Europe/Paris")
 
-        if 15 <= datetime.now(utc).hour <= 20:
-            print("ok")
-            articles = Article.query.filter_by(scheduled=True).all()
+        articles = Article.query.filter_by(scheduled=True).all()
 
-            if articles:
-                for article in articles:
-                    if article.date <= datetime.now():
-                        article.posted = True
-                        article.scheduled = False
+        if articles:
+            for article in articles:
+                if article.date <= datetime.now():
+                    article.posted = True
+                    article.scheduled = False
 
-                db.session.commit()
+            db.session.commit()
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(check_schedule, 'interval', seconds=5)
+scheduler.add_job(check_schedule, 'interval', minutes=5)
 scheduler.start()
 
 
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash("Fichier trop volumineux", "error")
+    return redirect(redirect_url())
 
 @app.route("/")
 def index():
@@ -107,6 +107,7 @@ def index():
                             pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, quote=quote, Markup=Markup)
 
 
+
 @app.route("/create", methods=["POST", "GET"])
 def create():
     if session["user"] == None:
@@ -121,12 +122,10 @@ def create():
             img.thumbnail([500,500], Image.ANTIALIAS)
             img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         else:
-            print("error")
-            # TO DO Error Page, Flask will raise an RequestEntityTooLarge exception if file too large (> 32 mb)
+            flash("Erreur de fichier", "error")
+            return redirect("/create")
 
-        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%d")
-
-        date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
+        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%dT%H:%M")
 
         if request.form["submit_button"] == "Enregistrer":
             article = Article(
@@ -249,7 +248,6 @@ def logout():
 
 @app.route("/list_edit", methods=["POST", "GET"])
 def list_edit():
-    
     if session["user"] == None:
         flash("Vous devez être connecté", "error")
         return redirect("/login")
@@ -305,16 +303,19 @@ def edit_article():
         article = Article.query.filter_by(id=request.form.get("id")).first()
 
         pic = request.files["thumb"]
-        if pic and allowed_file(pic.filename):
-            filename = os.path.basename(article.img) # extract filename from path
-            img = Image.open(pic)
-            img.thumbnail([500,500], Image.ANTIALIAS)
-            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if pic:
+            if allowed_file(pic.filename):
+                filename = os.path.basename(article.img) # extract filename from path
+                img = Image.open(pic)
+                img.thumbnail([500,500], Image.ANTIALIAS)
+                img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            else:
+                flash("Erreur de fichier", "error")
+                return redirect("/edit_article")
 
             article.img = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             
-        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%d")
-        date_object = date_object.replace(hour=datetime.today().hour, minute=datetime.today().minute)
+        date_object = datetime.strptime(request.form.get("date"), "%Y-%m-%dT%H:%M")
         
         article.title = request.form.get("title")
         article.text = request.form.get("text")
@@ -367,3 +368,63 @@ def quote():
 
     
     return render_template("quote.html")
+
+
+@app.route("/delete_article")
+def delete_article():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+    id = int(request.args.get("id"))
+    Article.query.filter_by(id=id).delete()
+    db.session.commit()
+    return redirect("/list_edit")
+
+
+@app.route("/list_quote", )
+def list_quotes():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+
+    page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
+    total_pages, nb_pages = page_list_quotes()  # A list of pages and its length
+
+    # The start variable is used to query the db starting with the right article for each page
+    start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
+    
+    # We use the two variables below to display the correct amount of buttons on each side of the page selected
+    start_butt, end_butt = buttons_range()
+
+    # In the following conditions, the variable pages represents the nb of pages displayed each time (therefore, in most case it wont't be the total nb of pages)
+    # If the page selected is getting close to the beginning, we still display n buttons so we have more to the right
+    if page_selected < start_butt:  
+        pages = total_pages[:BUTTONS_DISPLAYED]
+    
+    # If the page selected is getting close to the end, we still display n buttons so we have more to the left
+    elif page_selected > nb_pages - end_butt:  
+        pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
+
+    # Else, we have the page selected right in the middle
+    else:
+        pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
+
+    # For each page, query the database, starting with the right article for each page
+    list_quotes = Quote.query.offset(start).limit(ARTICLES_PER_PAGE).all()
+
+    return render_template("list_quote.html", quotes=list_quotes, page_selected=int(page_selected), 
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup)
+
+
+@app.route("/delete_quote")
+def delete_quote():
+    if session["user"] == None:
+        flash("Vous devez être connecté", "error")
+        return redirect("/login")
+        
+    id = int(request.args.get("id"))
+    Quote.query.filter_by(id=id).delete()
+    db.session.commit()
+
+    flash("Citation supprimée", "info")
+    return redirect("/list_quote")

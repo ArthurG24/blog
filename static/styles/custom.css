@@ -273,6 +273,15 @@ a:active {
     background-color: #1d2529;
 }
 
+.quote-edit {
+    margin-top: 30px;
+}
+
+.delete-quote-button {
+    padding: 3px 4px;
+    font-size: 1em;
+}
+
 .article, .aside, .edit-article {
     box-sizing: border-box;
     background-color: #03141d;
@@ -484,9 +493,10 @@ input[type=submit] {
     color: #cfcbc5;
     font-size: 1.1em;
     font-weight: bold;
+    cursor: default !important;
 }
 
-input[type=Date] {
+input[type=Datetime-local] {
     background-color: #03141d;
     color: #cfcbc5;
 }
@@ -637,15 +647,32 @@ input[type=Date] {
     text-align: center;
 }
 
-.admin-buttons:active {
+.delete-button {
+    background-color: #03141d;
+    color: #cfcbc5;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 2px 6px 2px 6px;
+    border-top: 2px solid #CCCCCC;
+    border-right: 2px solid #979797;
+    border-bottom: 2px solid #979797;
+    border-left: 2px solid #CCCCCC;
+    text-decoration: none;
+    transition: none !important;
+    cursor: default;
+    margin-top: 20px !important;
+    position: absolute;
+    color: rgb(255, 69, 69);
+}
+
+.admin-buttons:active, .delete-button:active {
     border-top: 2px solid #979797;
     border-right: 2px solid #CCCCCC;
     border-bottom: 2px solid #CCCCCC;
     border-left: 2px solid #979797;
-    color: #cfcbc5;
 }
 
-.admin-buttons:hover {
+.admin-buttons:active, .admin-buttons:hover {
     color: #cfcbc5;
 }
 

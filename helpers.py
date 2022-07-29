@@ -1,4 +1,5 @@
-from models import Article
+from models import Article, Quote
+from flask import request, url_for
 import os
 import math
 
@@ -39,6 +40,22 @@ def page_list(status):
     return total_pages, nb_pages  # Return the list of pages and its length
 
 
+def page_list_quotes():
+    # Get the total number of quotes
+    nb_quotes = Quote.query.count()
+
+    nb_pages = math.ceil(nb_quotes / ARTICLES_PER_PAGE)  # Calculate enough pages to fit all the quotes
+    total_pages = range(1, nb_pages + 1)  # This list represent the total of pages containing all the quotes
+
+    return total_pages, nb_pages  # Return the list of pages and its length
+
+
 def buttons_range(): 
     # Used to display the correct amount of buttons on each side of the page selected
     return math.ceil(BUTTONS_DISPLAYED/2), math.floor(BUTTONS_DISPLAYED/2)
+
+
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)

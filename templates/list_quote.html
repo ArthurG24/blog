@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 quote-edit">
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }} posted">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% for quote in quotes %}
+        <div class="edit-article">
+            <div class="text">
+                {{ Markup(quote.text) }}
+            </div>
+            <a href="/delete_quote?id={{ quote.id }}" class="edit-button delete-quote-button">Supprimer</a>
+        </div>
+        {% endfor %}
+
+        
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<div class="pages">
+    
+    <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
+    {% if page_selected > start_butt and displayed < total|length %}
+        <a href="/list_quote?page={{ total[0] }}" class="page-buttons">{{ total[0] }}</a>
+            {% if page_selected > start_butt + 1 %}    
+                <span>...</span>
+            {% endif %}
+    {% endif %}
+
+    <!-- Show the buttons for each page passed by the application.py -->
+    {% for page in pages %}
+        {% if page == page_selected %}
+            <a href="/list_quote?page={{ page }}" class="page-buttons-selected">{{ page }}</a>
+        {% else %}
+            <a href="/list_quote?page={{ page }}" class="page-buttons">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+
+    <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
+    {% if page_selected < total|length - end_butt and displayed < total|length %}
+        {% if page_selected < total|length - (end_butt +1) %}    
+            <span>...</span>
+        {% endif %}
+        <a href="/list_quote?page={{ total[-1] }}" class="page-buttons">{{ total[-1] }}</a>
+    {% endif %}
+
+</div>
+
+{% endblock %}

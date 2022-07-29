@@ -46,9 +46,10 @@
     </div>
 
     <div class="finalize">
+      
       <label for="date">Date : </label>
-      <input type="date" required name="date" value="{{ article.date.strftime('%Y-%m-%d') }}">
-
+      <input type="datetime-local" required name="date" value="{{ article.date }}">
+      
       <div class="finalize-buttons">
         <input type="submit" value="Enregistrer" name="submit_button">
         <input type="submit" value="Programmer" name="submit_button">
@@ -56,8 +57,9 @@
         <input type="hidden" value="{{ article.id }}" name="id">
       </div>
     </div>
-
   </form>
+  <a href="/delete_article?id={{ article.id }}" class="delete-button">Supprimer</a>
+  
   
 </div>
 
