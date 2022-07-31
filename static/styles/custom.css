@@ -12,6 +12,10 @@
         display: none;
     }
 
+    .index-search {
+        width: 400px !important;
+    }
+
     .article .thumb {
         width: 250px !important;
         height: 200px !important;
@@ -94,6 +98,16 @@ a:active {
     text-align: center;
     border-radius: 0px 0px 5px 5px;
     box-shadow: 1px 1px 5px black;
+}
+
+.index-search {
+    width: 100%;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.keywords-index {
+    margin-bottom: 0px !important;
 }
 
 .nav-block {
@@ -273,10 +287,6 @@ a:active {
     background-color: #1d2529;
 }
 
-.quote-edit {
-    margin-top: 30px;
-}
-
 .delete-quote-button {
     padding: 3px 4px;
     font-size: 1em;
@@ -285,13 +295,18 @@ a:active {
 .article, .aside, .edit-article {
     box-sizing: border-box;
     background-color: #03141d;
-    margin-top: 20px;
     border-radius: 10px;
     border: #0d3e57 solid;
     box-shadow: 1px 1px 5px black;
 }
 
+.article {
+    margin-top: 20px;
+}
+
+
 .aside {
+    margin-top: 15px;
     height: 300px;
     overflow: auto;
 }
@@ -329,6 +344,18 @@ a:active {
     border-radius: 6px;
     font-weight: bold;
     width: 450px;
+}
+
+.keywords-input {
+    margin: 10px 10px 20px 0px;
+    background-color: #03141d;
+    color: #cfcbc5;
+    padding: 2.5px;
+    padding-left: 5px;
+    font-size: 1em;
+    border-radius: 6px;
+    font-weight: bold;
+    width: 250px;
 }
 
 .file-upload {
@@ -463,7 +490,7 @@ a:active {
     width: 350px;
 }
 
-.status-lookup {
+.lookup {
     margin: 20px 30px -10px 5px;
 }
 
@@ -475,6 +502,7 @@ a:active {
     border-radius: 6px;
     font-weight: bold;
     width: 250px;
+    margin-right: 15px;
 }
 
 .finalize {
@@ -504,7 +532,7 @@ input[type=Datetime-local] {
 .pages {
     width: 400px;
     margin: auto;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 30px;
     text-align: center;
 }

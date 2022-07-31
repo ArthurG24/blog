@@ -75,10 +75,16 @@ def request_entity_too_large(error):
     flash("Fichier trop volumineux", "error")
     return redirect(redirect_url())
 
+
 @app.route("/")
 def index():
+    if request.args.get("q"):
+        q = request.args.get("q")
+    else:
+        q = ""
+
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list("posted") # A list of pages and its length
+    total_pages, nb_pages = page_list("posted", q) # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
@@ -100,12 +106,12 @@ def index():
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    list_posts = Article.query.filter(Article.posted == True, Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
     quote = Quote.query.order_by(func.random()).first()
 
     return render_template("index.html", articles=list_posts, page_selected=int(page_selected), 
-                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, quote=quote, Markup=Markup)
-
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, 
+                            start_butt=start_butt, end_butt=end_butt, quote=quote, q=q, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
@@ -211,7 +217,8 @@ def admin():
     if session["user"] == None:
         flash("Vous devez être connecté", "error")
         return redirect("/login")
-    session["lookup_edit"] = "all"  # Used for query articles by status, either posted, archived or both
+    session["lookup_status"] = "all"  # Used for query articles by status, either posted, archived or both
+    session["lookup_keywords"] = ""
     return render_template("admin.html")
 
 
@@ -253,11 +260,18 @@ def list_edit():
         return redirect("/login")
 
     if request.method == "POST":
-        session["lookup_edit"] = request.form.get("status")
+
+        session["lookup_status"] = request.form.get("status")
+
+        if request.form.get("keywords"):  # If user has inputted keywords
+            session["lookup_keywords"] = request.form.get("keywords")
+        else:
+            session["lookup_keywords"] = ""
+
         return redirect("/list_edit")
 
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list(session["lookup_edit"])  # A list of pages and its length
+    total_pages, nb_pages = page_list(session["lookup_status"], session["lookup_keywords"])  # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
@@ -279,14 +293,14 @@ def list_edit():
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    if session["lookup_edit"] == "all":
-        list_posts = Article.query.order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
-    elif session["lookup_edit"] == "posted":
-        list_posts = Article.query.filter_by(posted=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
-    elif session["lookup_edit"] == "scheduled":
-        list_posts = Article.query.filter_by(posted=False, scheduled=True).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    if session["lookup_status"] == "all":
+        list_posts = Article.query.filter(Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    elif session["lookup_status"] == "posted":
+        list_posts = Article.query.filter(Article.posted == True, Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    elif session["lookup_status"] == "scheduled":
+        list_posts = Article.query.filter(Article.posted == False, Article.scheduled == True, Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
     else:  # archived
-        list_posts = Article.query.filter_by(posted=False, scheduled=False).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+        list_posts = Article.query.filter(Article.posted == False, Article.scheduled == False, Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
                             pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup, zip=zip)

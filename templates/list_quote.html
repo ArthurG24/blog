@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-8 quote-edit">
+    <div class="col-md-8">
         
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -13,6 +13,15 @@
             {% endfor %}
         {% endif %}
         {% endwith %}
+
+        <div class="lookup">
+            <form action="/list_edit" method="POST">
+                <label for="keywords">Mots-clés :</label>
+                <input type="text" name="keywords" class="keywords-input">
+
+                <input type="submit" value="OK" name="submit_button">
+            </form>
+        </div>
 
         {% for quote in quotes %}
         <div class="edit-article">

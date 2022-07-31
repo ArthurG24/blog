@@ -22,16 +22,16 @@ def countup_filename(filename):
     return str(nb_rows).zfill(4) + extension
 
 
-def page_list(status):
+def page_list(status, keywords):
     # Get the total number of articles depending on the status
     if status == "all":
-        nb_articles = Article.query.count()  
+        nb_articles = Article.query.filter(Article.text.contains(keywords)).count()  
     elif status == "posted":
-        nb_articles = Article.query.filter_by(posted=True).count()
+        nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == True).count()
     elif status == "scheduled":
-        nb_articles = Article.query.filter_by(scheduled=True).count()
+        nb_articles = Article.query.filter(Article.text.contains(keywords), Article.scheduled == True).count()
     else:  # archived
-        nb_articles = Article.query.filter_by(posted=False, scheduled=False).count()
+        nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == False, scheduled=False).count()
 
 
     nb_pages = math.ceil(nb_articles / ARTICLES_PER_PAGE)  # Calculate enough pages to fit all the articles
