@@ -14,29 +14,29 @@ tinymce.init({
   
     
     
-    const chooseFile = document.getElementById("thumb");
-    const imgPreview = document.getElementById("img-preview");
+const chooseFile = document.getElementById("thumb");
+const imgPreview = document.getElementById("img-preview");
     
-    chooseFile.addEventListener("change", function () {
-      getImgData();
-    });
+chooseFile.addEventListener("change", function () {
+  getImgData();
+});
     
-    function getImgData() {
-      const files = chooseFile.files[0];
-      if (files) {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(files);
-        fileReader.addEventListener("load", function () {
-          imgPreview.style.display = "block";
-          imgPreview.innerHTML = '<img src="' + this.result + '" />';
-          document.getElementById("img-preview-edit").style.display = "None"
-        });    
-      }
-    }
+function getImgData() {
+  const files = chooseFile.files[0];
+  if (files) {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(files);
+    fileReader.addEventListener("load", function () {
+      imgPreview.style.display = "block";
+      imgPreview.innerHTML = '<img src="' + this.result + '" />';
+      document.getElementById("img-preview-edit").style.display = "None"
+    });    
+  }
+}
     
 
-    dt = new Date()
-    dt.setSeconds(0, 0)
-    dt.setHours(dt.getHours() + 2)
-    console.log(dt);
-    document.getElementById('calendar').valueAsDate = dt;
+dt = new Date()
+dt.setSeconds(0, 0)
+dt.setHours(dt.getHours() + 2)
+console.log(dt);
+document.getElementById('calendar').valueAsDate = dt;

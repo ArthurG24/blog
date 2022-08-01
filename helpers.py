@@ -31,7 +31,7 @@ def page_list(status, keywords):
     elif status == "scheduled":
         nb_articles = Article.query.filter(Article.text.contains(keywords), Article.scheduled == True).count()
     else:  # archived
-        nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == False, scheduled=False).count()
+        nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == False, Article.scheduled == False).count()
 
 
     nb_pages = math.ceil(nb_articles / ARTICLES_PER_PAGE)  # Calculate enough pages to fit all the articles

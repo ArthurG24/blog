@@ -92,14 +92,19 @@ def index():
     # We use the two variables below to display the correct amount of buttons on each side of the page selected
     start_butt, end_butt = buttons_range()
 
-    # In the following conditions, the variable pages represents the nb of pages displayed each time (therefore, in most case it wont't be the total nb of pages)
+    # In the following conditions, the variable pages represents the nb of pages displayed each time 
+    # (therefore, in most case it wont't be the total nb of pages)
+
     # If the page selected is getting close to the beginning, we still display n buttons so we have more to the right
     if page_selected < start_butt:  
         pages = total_pages[:BUTTONS_DISPLAYED]
     
     # If the page selected is getting close to the end, we still display n buttons so we have more to the left
     elif page_selected > nb_pages - end_butt:  
-        pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
+        if nb_pages <= 2:
+            pages = total_pages
+        else:
+            pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
 
     # Else, we have the page selected right in the middle
     else:
@@ -253,25 +258,24 @@ def logout():
     return redirect("/")
 
 
-@app.route("/list_edit", methods=["POST", "GET"])
+@app.route("/list_edit")
 def list_edit():
     if session["user"] == None:
         flash("Vous devez être connecté", "error")
         return redirect("/login")
 
-    if request.method == "POST":
+    if request.args.get("keywords"):
+        q = request.args.get("keywords")
+    else:
+        q = ""
 
-        session["lookup_status"] = request.form.get("status")
-
-        if request.form.get("keywords"):  # If user has inputted keywords
-            session["lookup_keywords"] = request.form.get("keywords")
-        else:
-            session["lookup_keywords"] = ""
-
-        return redirect("/list_edit")
+    if request.args.get("status"):
+        s = request.args.get("status")
+    else:
+        s = "all"
 
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list(session["lookup_status"], session["lookup_keywords"])  # A list of pages and its length
+    total_pages, nb_pages = page_list(s, q)  # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
@@ -285,25 +289,28 @@ def list_edit():
         pages = total_pages[:BUTTONS_DISPLAYED]
     
     # If the page selected is getting close to the end, we still display n buttons so we have more to the left
-    elif page_selected > nb_pages - end_butt:  
-        pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
+    elif page_selected > nb_pages - end_butt: 
+        if nb_pages <= 2:
+            pages = total_pages
+        else: 
+            pages = total_pages[nb_pages - BUTTONS_DISPLAYED:]
 
     # Else, we have the page selected right in the middle
     else:
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    if session["lookup_status"] == "all":
-        list_posts = Article.query.filter(Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
-    elif session["lookup_status"] == "posted":
-        list_posts = Article.query.filter(Article.posted == True, Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
-    elif session["lookup_status"] == "scheduled":
-        list_posts = Article.query.filter(Article.posted == False, Article.scheduled == True, Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    if s == "all":
+        list_posts = Article.query.filter(Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    elif s == "posted":
+        list_posts = Article.query.filter(Article.posted == True, Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    elif s == "scheduled":
+        list_posts = Article.query.filter(Article.posted == False, Article.scheduled == True, Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
     else:  # archived
-        list_posts = Article.query.filter(Article.posted == False, Article.scheduled == False, Article.text.contains(session["lookup_keywords"])).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+        list_posts = Article.query.filter(Article.posted == False, Article.scheduled == False, Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
 
     return render_template("list_edit.html", articles=list_posts, page_selected=int(page_selected), 
-                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, Markup=Markup, zip=zip)
+                            pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, start_butt=start_butt, end_butt=end_butt, q=q, s=s, Markup=Markup, zip=zip)
 
 
 @app.route("/edit_article", methods=["POST", "GET"])

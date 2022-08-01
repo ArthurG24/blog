@@ -7,11 +7,11 @@
     <div class="col-md-8">
 
         <div class="lookup">
-            <form action="/list_edit" method="POST">
+            <form action="/list_edit">
                 <label for="status" class="categories-label">Articles :</label>
                 <select name="status" class="status-input">
                     {% for status, display in zip(["all", "posted", "archived", "scheduled"], ["Tous", "Publiés", "Archivés", "Programmés"]) %}
-                        {% if status == session["lookup_status"] %}
+                        {% if status == s %}
                             <option selected value="{{ status }}">{{ display }}</option>
                         {% else %}
                             <option value="{{ status }}">{{ display }}</option>
@@ -19,9 +19,9 @@
                     {% endfor %}
                 </select>
                 <label for="keywords">Mots-clés :</label>
-                <input type="text" name="keywords" class="keywords-input" value="{{ session['lookup_keywords'] }}">
+                <input type="text" name="keywords" class="keywords-input" value="{{ q }}">
 
-                <input type="submit" value="OK" name="submit_button">
+                <input type="submit" value="OK">
             </form>
         </div>
 
@@ -61,7 +61,7 @@
     
     <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
     {% if page_selected > start_butt and displayed < total|length %}
-        <a href="/list_edit?page={{ total[0] }}" class="page-buttons">{{ total[0] }}</a>
+        <a href="/list_edit?page={{ total[0] }}&status={{ s }}&keywords={{ q }}" class="page-buttons">{{ total[0] }}</a>
             {% if page_selected > start_butt + 1 %}    
                 <span>...</span>
             {% endif %}
@@ -70,9 +70,9 @@
     <!-- Show the buttons for each page passed by the application.py -->
     {% for page in pages %}
         {% if page == page_selected %}
-            <a href="/list_edit?page={{ page }}" class="page-buttons-selected">{{ page }}</a>
+            <a href="/list_edit?page={{ page }}&status={{ s }}&keywords={{ q }}" class="page-buttons-selected">{{ page }}</a>
         {% else %}
-            <a href="/list_edit?page={{ page }}" class="page-buttons">{{ page }}</a>
+            <a href="/list_edit?page={{ page }}&status={{ s }}&keywords={{ q }}" class="page-buttons">{{ page }}</a>
         {% endif %}
     {% endfor %}
 
