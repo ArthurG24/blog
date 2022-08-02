@@ -1,6 +1,45 @@
-.container{
+.container {
     max-width: 1700px;
 }
+
+.toggle {
+    top: 25px;
+    right: 30px;
+    position: absolute;
+}
+
+.ball {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    border-radius: 50%;
+    transition: transform 0.2s linear;
+}
+
+.checkbox {
+    opacity: 0;
+    position: absolute;
+}  
+
+.checkbox:checked + .label .ball {
+    transform: translateX(24px);
+}
+
+.label[for="checkbox"] {
+    width: 50px;
+    height: 26px;
+    background-color:#111;
+    display: flex;
+    border-radius:50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    position: relative;
+    transform: scale(1.5);
+  }
 
 @media (max-width: 991px) {
     .col-md-9 {
@@ -71,6 +110,11 @@ body {
     color: #cfcbc5;
 }
 
+body.light {
+    background-color: #6c757d !important;
+    color: #03121a !important;
+}
+
 a:hover {
     color: #e13e1e;
     transition: 0.3s;
@@ -139,10 +183,24 @@ a:active {
 
 .article-header {
     background-color: #0d3e57;
-    height: 40px;
     border-radius: 6px 6px 0px 0px;
     padding-left: 25px;
     height: 50px;
+}
+
+.article-header.light {
+    background-color: #062941;
+}
+
+.aside-header {
+    background-color: #0d3e57;
+    height: 45px;
+    border-radius: 6px 6px 0px 0px;
+    padding-left: 25px;
+}
+
+.aside-header.light {
+    background-color: #062941;
 }
 
 .article-header h2 {
@@ -202,9 +260,8 @@ a:active {
     color: #cfcfcf;
     Font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
     font-weight: bolder;
-    border-bottom: 3px solid #c5472e;
     width: 200px;
-    margin: 10px 0px 5px 30px;
+    padding : 5px 0px 5px 30px;
     padding-left: 20px;
     font-size: 1.6em;
 }
@@ -249,10 +306,26 @@ a:active {
 }
 
 .quote-author {
-    margin-top: -15px;
+    /* margin-top: -15px; */
+    position: absolute;
+    right: 15px;
+    bottom: 25px;
     text-align: right;
     font-style: italic;
     text-decoration: underline;
+}
+
+.aside-quote {
+    height: 275px !important;
+    position: relative !important;
+}
+
+.quote-block {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .article, .edit-article {
@@ -299,6 +372,11 @@ a:active {
     border-radius: 10px;
     border: #0d3e57 solid;
     box-shadow: 1px 1px 5px black;
+}
+
+.article.light, .aside.light, .edit-article.light {
+    background-color: #e1e1e1;
+    border-color: #062941;
 }
 
 .article {

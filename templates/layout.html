@@ -12,6 +12,8 @@
 
   </head>
   <body>
+
+
     <div class="container">
 
         <div onclick="location.href='/';" class="p-5 new-header"></div>
@@ -42,9 +44,35 @@
         
     </div>
 
+    <div class="toggle">
+      <input type="checkbox" class="checkbox" id="checkbox">
+      <label for="checkbox" class="label">
+        <i class="fas fa-moon"></i>
+        <i class='fas fa-sun'></i>
+        <div class='ball'>
+      </label>
+    </div>
+
+    <script>
+      const checkbox = document.getElementById('checkbox');
+
+      checkbox.addEventListener('change', ()=>{
+
+        document.body.classList.toggle("light");
+
+        var elements = ["article", "aside", "edit-article", "aside-h2", "article-header", "aside-header"];
 
 
+        for(var i = 0; i < elements.length; i++) {
 
+          elem = document.getElementsByClassName(elements[i])
+
+          for(var j = 0; j < elem.length; j++) {
+            elem[j].classList.toggle("light");
+          }
+        }
+      }) 
+    </script>
 
     <script src="{{ url_for('static', filename='styles/bootstrap.min.js')}}" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
   </body>

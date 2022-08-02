@@ -37,17 +37,26 @@
             <input type="submit" value="Rechercher">
         </form>
 
-        <div class="aside">
-            <h2>Citation</h2>
-            <p class="quote-block">
+        <div class="aside aside-quote">
+
+            <div class="aside-header">
+                <h2>Citation</h2>
+            </div>
+            
+            <span class="quote-block">
                 <span class="quote-text">{{ Markup(quote.text) }}</span>
-                {% if quote.author %}
-                    <p class="quote-author">{{ quote.author }}</p>
-                {% endif %}
-            </p>
+            </span>
+            {% if quote.author %}
+                <p class="quote-author">{{ quote.author }}</p>
+            {% endif %}
+            
         </div>
+
         <div class="aside">
-            <h2>Titre</h2>
+            <div class="aside-header">
+                <h2>Titre</h2>
+            </div>
+            
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia laboriosam distinctio eum libero, eius, iure tempore quae odit cupiditate, id animi sint inventore voluptate alias asperiores porro. Dolorum, excepturi architecto!</p>
         </div>
             

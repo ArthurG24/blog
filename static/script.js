@@ -40,3 +40,5 @@ dt.setSeconds(0, 0)
 dt.setHours(dt.getHours() + 2)
 console.log(dt);
 document.getElementById('calendar').valueAsDate = dt;
+
+
