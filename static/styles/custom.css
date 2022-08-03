@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'Rounded-Mplus-1c-Medium';
+    src:url('fonts/Rounded-Mplus-1c-Medium.ttf.woff') format('woff'),
+        url('fonts/Rounded-Mplus-1c-Medium.ttf.svg#Rounded-Mplus-1c-Medium') format('svg'),
+        url('fonts/Rounded-Mplus-1c-Medium.ttf.eot'),
+        url('fonts/Rounded-Mplus-1c-Medium.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
 .container {
     max-width: 1700px;
 }
@@ -11,10 +21,10 @@
 .ball {
     width: 20px;
     height: 20px;
-    background-color: white;
+    background-color: rgb(190, 190, 190);
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top: 3px;
+    left: 3px;
     border-radius: 50%;
     transition: transform 0.2s linear;
 }
@@ -22,7 +32,7 @@
 .checkbox {
     opacity: 0;
     position: absolute;
-}  
+}
 
 .checkbox:checked + .label .ball {
     transform: translateX(24px);
@@ -31,7 +41,7 @@
 .label[for="checkbox"] {
     width: 50px;
     height: 26px;
-    background-color:#111;
+    background-color:rgb(66, 66, 66);
     display: flex;
     border-radius:50px;
     align-items: center;
@@ -39,6 +49,14 @@
     padding: 5px;
     position: relative;
     transform: scale(1.5);
+  }
+
+  .fa-sun {
+    color: #f8a061;
+  }
+
+  .fa-moon {
+    color: #3b7a9a;
   }
 
 @media (max-width: 991px) {
@@ -204,11 +222,12 @@ a:active {
 }
 
 .article-header h2 {
-    font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
+    font-family: 'Rounded-Mplus-1c-Medium', Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
     position: absolute;
     margin-top: 7px;
     font-weight: bolder;
     display: inline;
+    font-size: 1.9em;
 }
 
 .article-header h2 a {
@@ -258,12 +277,12 @@ a:active {
 
 .aside h2 {
     color: #cfcfcf;
-    Font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
+    Font-family: 'Rounded-Mplus-1c-Medium', Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
     font-weight: bolder;
     width: 200px;
-    padding : 5px 0px 5px 30px;
+    padding : 7px 0px 5px 30px;
     padding-left: 20px;
-    font-size: 1.6em;
+    font-size: 1.5em;
 }
 
 .article .thumb {
@@ -283,13 +302,12 @@ a:active {
 }
 
 .article h3 {
-    color: #cfcfcf;
-    font-family: Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
+    font-family: 'Rounded-Mplus-1c-Medium', Candara, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
     font-weight: bold;
-    font-size: 1.6em;
+    font-size: 1.4em;
     font-style: italic;
-    margin-top: 0.8em;
-    margin-bottom: 0.2em;
+    margin-top: 1.4em;
+    margin-bottom: 0.7em;
     margin-left: 2em;
 }
 
@@ -795,5 +813,5 @@ footer {
 }
 
 footer a {
-    color: #cfcbc5;
+    color: #fbb077;
 }

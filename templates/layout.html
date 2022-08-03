@@ -9,6 +9,7 @@
     
     <link href="{{ url_for('static', filename='styles/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/custom.css')}}" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/7673cc062c.js" crossorigin="anonymous"></script>
 
   </head>
   <body>
@@ -45,34 +46,73 @@
     </div>
 
     <div class="toggle">
-      <input type="checkbox" class="checkbox" id="checkbox">
+      <input type="checkbox" class="checkbox" name="theme" id="checkbox">
       <label for="checkbox" class="label">
+        <i class="fas fa-sun"></i>
         <i class="fas fa-moon"></i>
-        <i class='fas fa-sun'></i>
         <div class='ball'>
       </label>
     </div>
 
+
+    
     <script>
+
+      var elements = ["article", "aside", "edit-article", "aside-h2", "article-header", "aside-header", "h3"];
       const checkbox = document.getElementById('checkbox');
 
-      checkbox.addEventListener('change', ()=>{
+      window.addEventListener("load", ()=>{
 
-        document.body.classList.toggle("light");
+        if (localStorage.getItem("theme") == "light") {
 
-        var elements = ["article", "aside", "edit-article", "aside-h2", "article-header", "aside-header"];
+          document.body.classList.add("light");
+          checkbox.checked = true;
+          console.log(10)
 
-
-        for(var i = 0; i < elements.length; i++) {
-
-          elem = document.getElementsByClassName(elements[i])
-
-          for(var j = 0; j < elem.length; j++) {
-            elem[j].classList.toggle("light");
+          for(var i = 0; i < elements.length; i++) {
+            elem = document.getElementsByClassName(elements[i]);
+            for(var j = 0; j < elem.length; j++) {
+              elem[j].classList.add("light");
+            }
           }
         }
+      })
+
+
+      checkbox.addEventListener("change", ()=>{
+
+        if (event.currentTarget.checked) {
+          document.body.classList.add("light");
+
+          for(var i = 0; i < elements.length; i++) {
+            elem = document.getElementsByClassName(elements[i]);
+            for(var j = 0; j < elem.length; j++) {
+              elem[j].classList.add("light");
+            }
+          }
+
+          localStorage.setItem("theme", "light");
+
+        }
+
+        else {
+          document.body.classList.remove("light");
+
+          for(var i = 0; i < elements.length; i++) {
+          elem = document.getElementsByClassName(elements[i])
+          
+            for(var j = 0; j < elem.length; j++) {
+              elem[j].classList.remove("light");
+            }
+          }
+
+          localStorage.setItem("theme", "dark");
+
+        }
       }) 
+
     </script>
+
 
     <script src="{{ url_for('static', filename='styles/bootstrap.min.js')}}" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
   </body>
