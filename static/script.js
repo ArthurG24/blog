@@ -1,4 +1,5 @@
-var elements = ["article", 
+var elements = ["nav",
+"article", 
 "aside", 
 "edit-article", 
 "aside-h2", 
