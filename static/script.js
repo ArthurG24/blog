@@ -25,6 +25,8 @@ window.addEventListener("load", ()=>{
     
     tinymce.init({
       selector: 'textarea',
+      content_style:
+        "body { background: #e1e1e1; color: #03121a; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
       // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
       plugins: 'table',
@@ -50,6 +52,8 @@ window.addEventListener("load", ()=>{
   else {
     tinymce.init({
       selector: 'textarea',
+      content_style:
+        "body { background: #03141d; color: #cfcbc5; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
       // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
       plugins: 'table',
@@ -72,6 +76,8 @@ checkbox.addEventListener("change", ()=>{
 
     tinymce.init({
       selector: 'textarea',
+      content_style:
+        "body { background: #e1e1e1; color: #cfcbc5; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
       // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
       plugins: 'table',
@@ -101,7 +107,7 @@ checkbox.addEventListener("change", ()=>{
     tinymce.init({
       selector: 'textarea',
       content_style:
-        "body { background: #6A7A95; color: white; font-size: 14pt; font-family: Arial; }",
+        "body { background: #03141d; color: #03121a; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
       // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
       plugins: 'table',
