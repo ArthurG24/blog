@@ -37,9 +37,9 @@
 
         <div class="container">
             {% if session.user == None %}
-              <footer>Copyright &copy; 2022 Cool Morning - <a href="/login">Se connecter</a></footer>
+              <footer>Copyright &copy; 2022 Cool Morning - <a class="foot-link" href="/login">Se connecter</a></footer>
             {% else %}
-              <footer>Copyright &copy; 2022 Cool Morning - <a href="/admin">Admin</a> - <a href="/logout">Se déconnecter</a></footer>
+              <footer>Copyright &copy; 2022 Cool Morning - <a class="foot-link" href="/admin">Admin</a> - <a class="foot-link" href="/logout">Se déconnecter</a></footer>
             {% endif %}
         </div>
         
@@ -55,65 +55,7 @@
     </div>
 
 
-    
-    <script>
-
-      var elements = ["article", "aside", "edit-article", "aside-h2", "article-header", "aside-header", "h3"];
-      const checkbox = document.getElementById('checkbox');
-
-      window.addEventListener("load", ()=>{
-
-        if (localStorage.getItem("theme") == "light") {
-
-          document.body.classList.add("light");
-          checkbox.checked = true;
-          console.log(10)
-
-          for(var i = 0; i < elements.length; i++) {
-            elem = document.getElementsByClassName(elements[i]);
-            for(var j = 0; j < elem.length; j++) {
-              elem[j].classList.add("light");
-            }
-          }
-        }
-      })
-
-
-      checkbox.addEventListener("change", ()=>{
-
-        if (event.currentTarget.checked) {
-          document.body.classList.add("light");
-
-          for(var i = 0; i < elements.length; i++) {
-            elem = document.getElementsByClassName(elements[i]);
-            for(var j = 0; j < elem.length; j++) {
-              elem[j].classList.add("light");
-            }
-          }
-
-          localStorage.setItem("theme", "light");
-
-        }
-
-        else {
-          document.body.classList.remove("light");
-
-          for(var i = 0; i < elements.length; i++) {
-          elem = document.getElementsByClassName(elements[i])
-          
-            for(var j = 0; j < elem.length; j++) {
-              elem[j].classList.remove("light");
-            }
-          }
-
-          localStorage.setItem("theme", "dark");
-
-        }
-      }) 
-
-    </script>
-
-
+    <script src="{{ url_for('static', filename='script.js')}}"></script>
     <script src="{{ url_for('static', filename='styles/bootstrap.min.js')}}" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
   </body>
 </html>

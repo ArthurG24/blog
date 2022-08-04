@@ -443,6 +443,11 @@ a:active {
     width: 450px;
 }
 
+.title-input.light {
+    background-color: #d9d9d9;
+    color: #03141d;
+}
+
 .keywords-input {
     margin: 10px 10px 20px 0px;
     background-color: #03141d;
@@ -453,6 +458,11 @@ a:active {
     border-radius: 6px;
     font-weight: bold;
     width: 250px;
+}
+
+.keywords-input.light {
+    background-color: #d9d9d9;
+    color: #03141d;
 }
 
 .file-upload {
@@ -569,6 +579,15 @@ a:active {
     margin-bottom: 10px;
 }
 
+.file-label.light {
+    background-color: #cfcbc5;
+    color: #151617;
+}
+
+.file-label.light:active {
+    color: #777;
+}
+
 .file-label:active {
     border-top: 2px solid #979797;
     border-right: 2px solid #CCCCCC;
@@ -587,6 +606,11 @@ a:active {
     width: 350px;
 }
 
+.categories-input.light {
+    background-color: #d9d9d9;
+    color: #03141d;
+}
+
 .lookup {
     margin: 20px 30px -10px 5px;
 }
@@ -602,6 +626,11 @@ a:active {
     margin-right: 15px;
 }
 
+.status-input.light {
+    background-color: #d9d9d9;
+    color: #03141d;
+}
+
 .finalize {
     float: right;
     margin-right: 10px;
@@ -612,7 +641,7 @@ a:active {
     display: inline;
 }
 
-input[type=submit] {
+.submit-button {
     margin: 20px 0px 10px 10px;
     background-color: #03141d;
     color: #cfcbc5;
@@ -621,9 +650,31 @@ input[type=submit] {
     cursor: default !important;
 }
 
-input[type=Datetime-local] {
+.submit-button.light {
+    background-color: #cfcbc5;
+    color: #151617;
+}
+
+.submit-button:active {
+    color: #cfcbc5;
+}
+
+.submit-button.light:active {
+    color: #777777;
+}
+
+.label-date.light {
+    color: black;
+}
+
+.input-date {
     background-color: #03141d;
     color: #cfcbc5;
+}
+
+.input-date.light {
+    background-color: #ebebeb;
+    color: #151617;
 }
 
 .pages {
@@ -772,6 +823,11 @@ input[type=Datetime-local] {
     text-align: center;
 }
 
+.admin-buttons.light {
+    background-color: #cfcbc5;
+    color: #151617;
+}
+
 .delete-button {
     background-color: #03141d;
     color: #cfcbc5;
@@ -790,6 +846,15 @@ input[type=Datetime-local] {
     color: rgb(255, 69, 69);
 }
 
+.delete-button.light {
+    background-color: #cfcbc5;
+    color: rgb(207, 11, 11);
+}
+
+.delete-button.light:active {
+    color:  rgb(213, 75, 75) !important;
+}
+
 .admin-buttons:active, .delete-button:active {
     border-top: 2px solid #979797;
     border-right: 2px solid #CCCCCC;
@@ -799,6 +864,18 @@ input[type=Datetime-local] {
 
 .admin-buttons:active, .admin-buttons:hover {
     color: #cfcbc5;
+}
+
+.admin-buttons.light:hover {
+    color: #151617;
+}
+
+.admin-buttons.light:active, .delete-button.light:active {
+    color: #777777;
+    border-top: 2px solid #979797;
+    border-right: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC;
+    border-left: 2px solid #979797;
 }
 
 .change-password {
@@ -812,6 +889,12 @@ footer {
     margin: 15px;
 }
 
-footer a {
-    color: #fbb077;
+
+
+.foot-link {
+    color: #cfcbc5;
+}
+
+.foot-link.light {
+    color: #e1e1e1;
 }

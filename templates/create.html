@@ -44,13 +44,13 @@
     </div>
 
     <div class="finalize">
-      <label for="date">Date : </label>
-      <input type="datetime-local" id="calendar" required name="date">
+      <label class="label-date" for="date">Date : </label>
+      <input class="input-date" type="datetime-local" id="calendar" required name="date">
 
       <div class="finalize-buttons">
-        <input type="submit" value="Enregistrer" name="submit_button">
-        <input type="submit" value="Programmer" name="submit_button">
-        <input type="submit" value="Poster" name="submit_button">
+        <input class="submit-button" type="submit" value="Enregistrer" name="submit_button">
+        <input class="submit-button" type="submit" value="Programmer" name="submit_button">
+        <input class="submit-button" type="submit" value="Poster" name="submit_button">
       </div>
     </div>
 
@@ -59,6 +59,6 @@
 </div>
 
 
-<script src="{{ url_for('static', filename='script.js')}}"></script>
+
 
 {% endblock %}

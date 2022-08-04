@@ -47,14 +47,14 @@
 
     <div class="finalize">
       
-      <label for="date">Date : </label>
-      <input type="datetime-local" required name="date" value="{{ article.date }}">
+      <label class="label-date" for="date">Date : </label>
+      <input class="input-date" type="datetime-local" required name="date" value="{{ article.date }}">
       
       <div class="finalize-buttons">
-        <input type="submit" value="Enregistrer" name="submit_button">
-        <input type="submit" value="Programmer" name="submit_button">
-        <input type="submit" value="Poster" name="submit_button">
-        <input type="hidden" value="{{ article.id }}" name="id">
+        <input class="submit-button" type="submit" value="Enregistrer" name="submit_button">
+        <input class="submit-button" type="submit" value="Programmer" name="submit_button">
+        <input class="submit-button" type="submit" value="Poster" name="submit_button">
+        <input class="submit-button" type="hidden" value="{{ article.id }}" name="id">
       </div>
     </div>
   </form>
@@ -62,8 +62,5 @@
   
   
 </div>
-
-
-<script src="{{ url_for('static', filename='script.js')}}"></script>
 
 {% endblock %}

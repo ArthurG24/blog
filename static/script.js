@@ -1,16 +1,133 @@
-tinymce.init({
-    selector: 'textarea',
-    // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
-    // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
-    plugins: 'table',
-    toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
-    toolbar_mode: 'floating',
-    tinycomments_mode: 'embedded',
-    tinycomments_author: 'Author name',
-    skin_url: "/static/styles/skins/ui/custom-dark",
-    content_css: "/static/styles/skins/content/custom-dark/content.css",
-    });
+var elements = ["article", 
+"aside", 
+"edit-article", 
+"aside-h2", 
+"article-header", 
+"aside-header", 
+"h3",
+"foot-link",
+"keywords-input",
+"submit-button",
+"admin-buttons",
+"categories-input",
+"title-input",
+"file-label",
+"input-date",
+"label-date",
+"delete-button",
+"status-input"];
+
+const checkbox = document.getElementById('checkbox');
+
+window.addEventListener("load", ()=>{
+
+  if (localStorage.getItem("theme") == "light") {
+    
+    tinymce.init({
+      selector: 'textarea',
+      // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+      // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      plugins: 'table',
+      toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      skin_url: "/static/styles/skins/ui/light",
+      content_css: "/static/styles/skins/content/light/content.min.css",
+      });
+
+    document.body.classList.add("light");
+    checkbox.checked = true;
+
+    for(var i = 0; i < elements.length; i++) {
+      elem = document.getElementsByClassName(elements[i]);
+      for(var j = 0; j < elem.length; j++) {
+      elem[j].classList.add("light");
+      }
+    }
+  }
   
+  else {
+    tinymce.init({
+      selector: 'textarea',
+      // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+      // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      plugins: 'table',
+      toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      skin_url: "/static/styles/skins/ui/custom-dark",
+      content_css: "/static/styles/skins/content/custom-dark/content.min.css",
+      });
+  }
+})
+
+
+checkbox.addEventListener("change", ()=>{
+
+  if (event.currentTarget.checked) {
+    
+    tinymce.remove();
+
+    tinymce.init({
+      selector: 'textarea',
+      // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+      // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      plugins: 'table',
+      toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      skin_url: "/static/styles/skins/ui/light",
+      content_css: "/static/styles/skins/content/light/content.min.css",
+      });
+
+    document.body.classList.add("light");
+
+    for(var i = 0; i < elements.length; i++) {
+      elem = document.getElementsByClassName(elements[i]);
+      for(var j = 0; j < elem.length; j++) {
+        elem[j].classList.add("light");
+      }
+    }
+
+    localStorage.setItem("theme", "light");
+  }
+
+  else {
+    tinymce.remove();
+
+    tinymce.init({
+      selector: 'textarea',
+      content_style:
+        "body { background: #6A7A95; color: white; font-size: 14pt; font-family: Arial; }",
+      // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+      // toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      plugins: 'table',
+      toolbar: 'casechange checklist code export table tableofcontents h2 h3 underline italic bold link',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      skin_url: "/static/styles/skins/ui/custom-dark",
+      content_css: "/static/styles/skins/content/custom-dark/content.min.css",
+      });
+
+    document.body.classList.remove("light");
+
+    for(var i = 0; i < elements.length; i++) {
+      elem = document.getElementsByClassName(elements[i])
+
+      for(var j = 0; j < elem.length; j++) {
+        elem[j].classList.remove("light");
+      }
+    }
+
+    localStorage.setItem("theme", "dark");
+  }
+
+}) 
+
   
     
     
