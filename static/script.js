@@ -15,7 +15,8 @@ var elements = ["article",
 "input-date",
 "label-date",
 "delete-button",
-"status-input"];
+"status-input",
+"thumb"];
 
 const checkbox = document.getElementById('checkbox');
 

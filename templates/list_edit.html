@@ -8,18 +8,22 @@
 
         <div class="lookup">
             <form action="/list_edit">
-                <label for="status" class="categories-label">Articles :</label>
-                <select name="status" class="status-input">
-                    {% for status, display in zip(["all", "posted", "archived", "scheduled"], ["Tous", "Publiés", "Archivés", "Programmés"]) %}
-                        {% if status == s %}
-                            <option selected value="{{ status }}">{{ display }}</option>
-                        {% else %}
-                            <option value="{{ status }}">{{ display }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <label for="keywords">Mots-clés :</label>
-                <input type="text" name="keywords" class="keywords-input" value="{{ q }}">
+                <span class="status-search">
+                    <label for="status" class="categories-label">Articles :</label>
+                    <select name="status" class="status-input">
+                        {% for status, display in zip(["all", "posted", "archived", "scheduled"], ["Tous", "Publiés", "Archivés", "Programmés"]) %}
+                            {% if status == s %}
+                                <option selected value="{{ status }}">{{ display }}</option>
+                            {% else %}
+                                <option value="{{ status }}">{{ display }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </span>
+                <span class="keywords-search">
+                    <label for="keywords">Mots-clés :</label>
+                    <input type="text" name="keywords" class="keywords-input" value="{{ q }}">
+                </span>
 
                 <input type="submit" value="OK">
             </form>

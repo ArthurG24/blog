@@ -69,6 +69,10 @@
         display: none;
     }
 
+    .article h2 {
+        width: 95% !important;
+    }
+
     .index-search {
         width: 400px !important;
     }
@@ -76,6 +80,10 @@
     .article .thumb {
         width: 250px !important;
         height: 200px !important;
+    }
+
+    .keywords-search {
+        white-space: nowrap;
     }
 }
 
@@ -105,10 +113,6 @@
 
     .change-password {
         margin: auto;
-    }
-
-    .edit-button {
-        display: none;
     }
 }
 
@@ -236,9 +240,9 @@ a:active {
     text-overflow: ellipsis !important;
     white-space: nowrap;
     display: block;
-    width: 100%;
+    width: 65%;
     min-width: 1px;
-    padding-right: 60px;
+    padding-right: 30px;
 }
 
 .article-header h2 a {
@@ -304,6 +308,10 @@ a:active {
     height: 245px;
     object-fit: cover;
     box-shadow: 0px 0px 5px 4px #0d3e57;
+}
+
+.thumb.light {
+    box-shadow: 0px 0px 5px 4px #031521;
 }
 
 .article .text, .edit-article .text {
