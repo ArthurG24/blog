@@ -4,7 +4,7 @@ import os
 import math
 
 
-CATEGORIES = ["Divers", "Développement personnel", "Hi-tech", "Voyages"]
+CATEGORIES = ["Développement personnel", "Hi-tech", "Divers"]
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 ARTICLES_PER_PAGE = 10
 BUTTONS_DISPLAYED = 3 # Numbers of page buttons to display at the bottom of index
@@ -22,12 +22,15 @@ def countup_filename(filename):
     return str(nb_rows).zfill(4) + extension
 
 
-def page_list(status, keywords):
+def page_list(status, keywords, category):
     # Get the total number of articles depending on the status
     if status == "all":
-        nb_articles = Article.query.filter(Article.text.contains(keywords)).count()  
-    elif status == "posted":
-        nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == True).count()
+        nb_articles = Article.query.filter(Article.text.contains(keywords)).count()
+    elif status == "posted":  # Index page will ALWAYS use this
+        if category == "":
+            nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == True).count()
+        else:
+            nb_articles = Article.query.filter(Article.text.contains(keywords), Article.posted == True, Article.category == category).count()
     elif status == "scheduled":
         nb_articles = Article.query.filter(Article.text.contains(keywords), Article.scheduled == True).count()
     else:  # archived

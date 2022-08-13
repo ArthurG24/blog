@@ -6,6 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, request, session, redirect, flash, url_for, Markup
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 from sqlalchemy import func
 from werkzeug.security import generate_password_hash as hash, check_password_hash as check_hash
 
@@ -13,6 +14,7 @@ db = SQLAlchemy()
 
 from helpers import allowed_file, countup_filename, page_list, page_list_quotes, buttons_range, redirect_url, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED, CATEGORIES
 from models import Article, Admin, Quote
+
 
 # To execute from the terminal
 def create_admin():
@@ -41,7 +43,12 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SESSION_PERMANENT"] = False
     app.config["SESSION_TYPE"] = "filesystem"
-
+    app.config["MAIL_SERVER"] = "smtp.ionos.fr"
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = "login@coolmorning.fr"
+    app.config['MAIL_PASSWORD'] = "CS50iscool2022"
+    app.config['MAIL_USE_SSL'] = True
+    
     Session(app)
 
     db.init_app(app)
@@ -49,6 +56,7 @@ def create_app():
 
 app = create_app()
 app.app_context().push()
+mail = Mail(app)
 
 
 
@@ -70,10 +78,17 @@ scheduler.add_job(check_schedule, 'interval', minutes=5)
 scheduler.start()
 
 
+
+@app.context_processor
+def inject_categories():
+    return dict(categories=CATEGORIES)
+
+
 @app.errorhandler(413)
 def request_entity_too_large(error):
     flash("Fichier trop volumineux", "error")
     return redirect(redirect_url())
+
 
 
 @app.route("/")
@@ -83,8 +98,13 @@ def index():
     else:
         q = ""
 
+    if request.args.get("c"):
+        c = request.args.get("c")
+    else:
+        c = ""
+
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list("posted", q) # A list of pages and its length
+    total_pages, nb_pages = page_list("posted", q, c) # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE
@@ -111,12 +131,15 @@ def index():
         pages = total_pages[page_selected - start_butt:page_selected + end_butt]  
 
     # For each page, query the database, starting with the right article for each page
-    list_posts = Article.query.filter(Article.posted == True, Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    if c == "":
+        list_posts = Article.query.filter(Article.posted == True, Article.text.contains(q)).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
+    else:
+        list_posts = Article.query.filter(Article.posted == True, Article.text.contains(q), Article.category == c).order_by(Article.date.desc()).offset(start).limit(ARTICLES_PER_PAGE).all()
     quote = Quote.query.order_by(func.random()).first()
 
     return render_template("index.html", articles=list_posts, page_selected=int(page_selected), 
                             pages=pages, displayed=BUTTONS_DISPLAYED, total=total_pages, 
-                            start_butt=start_butt, end_butt=end_butt, quote=quote, q=q, Markup=Markup)
+                            start_butt=start_butt, end_butt=end_butt, quote=quote, q=q, c=c, Markup=Markup)
 
 
 @app.route("/create", methods=["POST", "GET"])
@@ -186,7 +209,7 @@ def create():
 
         return redirect("/create")
     
-    return render_template("create.html", categories=CATEGORIES)
+    return render_template("create.html")
         
 
 @app.route("/article")
@@ -206,7 +229,7 @@ def login():
             admin = Admin.query.filter_by(username=identifier).first()
 
         if admin and check_hash(admin.pwhash, request.form.get("password")):  # If username has been found and password correct
-            session["user"] = admin  # then in Jinja, session.user.author_name will work
+            session["user"] = admin  # then in Jinja, use session.user.author_name
 
             return redirect("/admin")
 
@@ -275,7 +298,7 @@ def list_edit():
         s = "all"
 
     page_selected = int(request.args.get("page", 1))  # We get the current page by looking at the URL
-    total_pages, nb_pages = page_list(s, q)  # A list of pages and its length
+    total_pages, nb_pages = page_list(s, q, "")  # A list of pages and its length
 
     # The start variable is used to query the db starting with the right article for each page
     start = (page_selected * ARTICLES_PER_PAGE) - ARTICLES_PER_PAGE

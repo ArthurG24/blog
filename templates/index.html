@@ -5,6 +5,10 @@
 <div class="row">
 
     <div class="col-md-9">
+        <form class="index-search-sm" action="/">
+            <input type="text" name="q" class="keywords-input keywords-index" placeholder="Mots-clés" value="{{ q }}">
+            <input class="submit-button" type="submit" value="Rechercher">
+        </form>
 
         {% for article in articles %}
         <div class="article">
@@ -12,10 +16,10 @@
             <div class="article-header">
                 <h2>
                     <a href="/article?id={{ article.id }}#begin">{{ article.title }}</a>
-                    {% if session.user != None%}
-                        <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
-                    {% endif %}
                 </h2>
+                {% if session.user != None%}
+                    <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
+                {% endif %}
                 <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
             </div>
             
@@ -67,7 +71,7 @@
     
     <!-- If the total nb of pages isn't superior to the page buttons displayed, no need to show this -->
     {% if page_selected > start_butt and displayed < total|length %}
-        <a href="/?page={{ total[0] }}&q={{ q }}" class="page-buttons">{{ total[0] }}</a>
+        <a href="/?page={{ total[0] }}&q={{ q }}&c={{ c }}" class="page-buttons">{{ total[0] }}</a>
             {% if page_selected > start_butt + 1 %}    
                 <span>...</span>
             {% endif %}
@@ -76,9 +80,9 @@
     <!-- Show the buttons for each page passed by the application.py -->
     {% for page in pages %}
         {% if page == page_selected %}
-            <a href="/?page={{ page }}&q={{ q }}" class="page-buttons-selected">{{ page }}</a>
+            <a href="/?page={{ page }}&q={{ q }}&c={{ c }}" class="page-buttons-selected">{{ page }}</a>
         {% else %}
-            <a href="/?page={{ page }}&q={{ q }}" class="page-buttons">{{ page }}</a>
+            <a href="/?page={{ page }}&q={{ q }}&c={{ c }}" class="page-buttons">{{ page }}</a>
         {% endif %}
     {% endfor %}
 

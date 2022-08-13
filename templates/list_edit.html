@@ -35,16 +35,13 @@
             <div class="article-header">
                 <h2>
                     <a href="/article?id={{ article.id }}#begin">{{ article.title }}</a>
-                    <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
                 </h2>
+                <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
                 {% if article.posted %}
-                    <p class="status">Posté</p>
                     <p>Posté par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
                 {% elif article.posted == False and article.scheduled == False %}
-                    <p class="status">Archivé</p>
-                    <p>Enregistré par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
+                    <p>Archivé par {{ article.author }} le {{ article.date.strftime('%d/%m/%Y') }}</p>
                 {% else %}
-                    <p class="status">Programmé</p>
                     <p>Programmé par {{ article.author }} pour le {{ article.date.strftime('%d/%m/%Y') }}</p>
                 {% endif %}
             </div>

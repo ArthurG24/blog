@@ -25,10 +25,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="#">Features</a>
-            <a class="nav-item nav-link" href="#">Pricing</a>
-            <a class="nav-item nav-link" href="#">Disabled</a>
+            {% for category in categories %}
+              {% if category == c %}
+                <a class="nav-item nav-link category-active" href="/?c={{ category }}">{{ category }}</a>
+              {% else %}
+                <a class="nav-item nav-link" href="/?c={{ category }}">{{ category }}</a>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
       </nav>
