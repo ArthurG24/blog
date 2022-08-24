@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="create-article clearfix create-message">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class="{{ category }} posted">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+  <form action="/contact" method="POST">
+
+    <div class="title-field">
+      <label for="email" class="title-label">Votre e-mail : </label>
+      <input type="email" required name="email" class="title-input" maxlength="100">
+    </div>
+
+    <label class="message-label" for="message">Votre message :</label>
+    <div class="text-input">
+      <textarea class="message" name="message" required></textarea>
+    </div>
+
+    {{ captcha(css_class="captcha") }} <!-- This renders an <img> tag with the captcha img. -->
+    <input type="text" name="captcha">
+
+    <div class="finalize">
+      <div class="finalize-buttons">
+        <input class="submit-button" type="submit" value="Envoyer" name="submit_button">
+      </div>
+    </div>
+
+  </form>
+  
+</div>
+
+{% endblock %}

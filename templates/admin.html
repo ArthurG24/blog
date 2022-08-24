@@ -2,6 +2,14 @@
 
 {% block body %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class="{{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <div class="admin">
     <a href="/password" class="admin-buttons">Modifier mot de passe</a>
     <a href="/create" class="admin-buttons">Créer un article</a>

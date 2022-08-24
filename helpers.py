@@ -2,6 +2,8 @@ from models import Article, Quote
 from flask import request, url_for
 import os
 import math
+from werkzeug.security import generate_password_hash as hash, check_password_hash as check_hash
+import random
 
 
 CATEGORIES = ["Développement personnel", "Hi-tech", "Divers"]
@@ -56,6 +58,12 @@ def page_list_quotes():
 def buttons_range(): 
     # Used to display the correct amount of buttons on each side of the page selected
     return math.ceil(BUTTONS_DISPLAYED/2), math.floor(BUTTONS_DISPLAYED/2)
+
+
+def generate_code():
+    code = ''.join(random.sample([str(x) for x in range(10)], 4))
+    hashed_code = hash(code)
+    return code, hashed_code
 
 
 def redirect_url(default='index'):

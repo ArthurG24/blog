@@ -465,8 +465,33 @@ a:active {
     margin-top: 40px;
 }
 
-.title-label, .categories-label {
+.title-label, .categories-label, .message-label {
     margin-left: 15px;
+}
+
+.create-message {
+    max-width: 900px;
+}
+
+.message-label {
+    display: block;
+}
+
+.message {
+    background-color: #03141d;
+    color: #cfcbc5;
+    width: 100%;
+    padding: 10px;
+    min-height: 300px;
+    }
+
+.message.light {
+    background-color: #d9d9d9;
+    color: #03141d;
+}
+
+.captcha {
+    margin: 10px;
 }
 
 .title-input {
@@ -787,9 +812,23 @@ a:active {
     margin-top: 30px;
 }
 
-.login-button input[type="submit"] {
+.input-login {
     width: 100%;
     margin: auto;
+    background-color: #03141d;
+    color: #cfcbc5;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: default !important;
+}
+
+.input-login.light {
+    background-color: #cfcbc5;
+    color: #03141d;
+}
+
+.confirm-code {
+    width: 180px !important;
 }
 
 .error {

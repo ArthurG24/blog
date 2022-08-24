@@ -1,0 +1,28 @@
+{% extends "layout.html " %}
+
+{% block body %}
+
+<div class="admin clearfix">
+
+    <p>Un code de confirmation vient de vous être envoyé par e-mail.</p>
+    <form action="/confirm_login" method="post">
+        <div class="identifier">
+            <label for="confirm_code" class="identifier-label">Code de confirmation :</label>
+            <input type="text" required class="identifier-input confirm-code" name="confirm_code">
+        </div>
+        
+        <div class="login-button">
+            <input class="input-login" type="submit" value="Confirmer">
+        </div>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+</div>
+
+{% endblock %}

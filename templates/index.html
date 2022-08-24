@@ -15,8 +15,9 @@
             
             <div class="article-header">
                 <h2>
-                    <a href="/article?id={{ article.id }}#begin">{{ article.title }}</a>
+                    <a href="/article?id={{ article.id }}#b">{{ article.title }}</a>
                 </h2>
+
                 {% if session.user != None%}
                     <a class="edit-button" href="/edit_article?id={{ article.id }}">Editer</a>
                 {% endif %}
@@ -95,5 +96,7 @@
     {% endif %}
 
 </div>
+
+
 
 {% endblock %}

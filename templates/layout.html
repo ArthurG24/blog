@@ -32,6 +32,7 @@
                 <a class="nav-item nav-link" href="/?c={{ category }}">{{ category }}</a>
               {% endif %}
             {% endfor %}
+            <a class="nav-item nav-link" href="/contact">Contact</a>
           </div>
         </div>
       </nav>
@@ -53,10 +54,10 @@
         </div>
 
         <div class="container">
-            {% if session.user == None %}
-              <footer>Copyright &copy; 2022 Cool Morning - <a class="foot-link" href="/login">Se connecter</a></footer>
-            {% else %}
+            {% if session.user %}
               <footer>Copyright &copy; 2022 Cool Morning - <a class="foot-link" href="/admin">Admin</a> - <a class="foot-link" href="/logout">Se déconnecter</a></footer>
+            {% else %}
+              <footer>Copyright &copy; 2022 Cool Morning - <a class="foot-link" href="/login">Se connecter</a></footer>
             {% endif %}
         </div>
         

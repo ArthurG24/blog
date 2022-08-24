@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from PIL import Image
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -9,10 +9,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from sqlalchemy import func
 from werkzeug.security import generate_password_hash as hash, check_password_hash as check_hash
+# from flask_sessionstore import Session
+from flask_session_captcha import FlaskSessionCaptcha
 
 db = SQLAlchemy()
 
-from helpers import allowed_file, countup_filename, page_list, page_list_quotes, buttons_range, redirect_url, ARTICLES_PER_PAGE, BUTTONS_DISPLAYED, CATEGORIES
+from helpers import *
 from models import Article, Admin, Quote
 
 
@@ -41,13 +43,17 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = 'static/img/thumbs'
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SESSION_PERMANENT"] = False
+    app.config["SESSION_PERMANENT"] = True
     app.config["SESSION_TYPE"] = "filesystem"
     app.config["MAIL_SERVER"] = "smtp.ionos.fr"
     app.config['MAIL_PORT'] = 465
     app.config['MAIL_USERNAME'] = "login@coolmorning.fr"
     app.config['MAIL_PASSWORD'] = "CS50iscool2022"
     app.config['MAIL_USE_SSL'] = True
+    app.config['CAPTCHA_ENABLE'] = True
+    app.config['CAPTCHA_LENGTH'] = 5
+    app.config['CAPTCHA_WIDTH'] = 160
+    app.config['CAPTCHA_HEIGHT'] = 60
     
     Session(app)
 
@@ -57,6 +63,7 @@ def create_app():
 app = create_app()
 app.app_context().push()
 mail = Mail(app)
+captcha = FlaskSessionCaptcha(app)
 
 
 
@@ -89,6 +96,13 @@ def request_entity_too_large(error):
     flash("Fichier trop volumineux", "error")
     return redirect(redirect_url())
 
+
+@app.errorhandler(500)  # Key error when session["..."] doesn't exist
+def key_error(error):
+    session["user"] = None
+    session["temp_user"] = None 
+    session["code"] = None
+    return redirect("/login")
 
 
 @app.route("/")
@@ -228,16 +242,54 @@ def login():
         else:
             admin = Admin.query.filter_by(username=identifier).first()
 
-        if admin and check_hash(admin.pwhash, request.form.get("password")):  # If username has been found and password correct
-            session["user"] = admin  # then in Jinja, use session.user.author_name
+        if admin and check_hash(admin.pwhash, request.form.get("password")):  # If username has been found and password is correct
+            
+            app.permanent_session_lifetime = timedelta(minutes=5)
 
-            return redirect("/admin")
+            # Send verification code by email
+            session["temp_user"] = admin
+
+            code, session["code"] = generate_code()
+
+            msg = Message("Code de confirmation", sender = "login@coolmorning.fr", recipients = [admin.email])
+            msg.body = f"Le code de confirmation est : {code}"
+            mail.send(msg)
+
+
+            # Display page to input verification code
+            return render_template("confirm_login.html")
 
         else:
             flash("Utilisateur ou mot de passe invalide", "error")
             return redirect("/login")
 
+    if session["user"]:
+        flash("Vous êtes déjà connecté", "info")
+        return redirect("/admin")
+
     return render_template("login.html")
+
+
+@app.route("/confirm_login", methods=["POST", "GET"])
+def confirm_login():
+    if request.method == "POST":
+
+        if check_hash(session["code"], request.form.get("confirm_code")):
+            session["user"] = session["temp_user"] # then in Jinja, use session.user.author_name
+            session["temp_user"] = None
+            app.permanent_session_lifetime = timedelta(minutes=50000)
+            return redirect("/admin")
+        else:
+            flash("Code invalide", "error")
+            return render_template("confirm_login.html")
+
+
+    else:  # If session["temp_user"] doesn't exist
+        if session["user"]:
+            flash("Vous êtes déjà connecté", "info")
+            return redirect("/admin")
+
+        return redirect("/login")
 
 
 @app.route("/admin")
@@ -472,3 +524,24 @@ def delete_quote():
 
     flash("Citation supprimée", "info")
     return redirect("/list_quote")
+
+
+@app.route("/contact", methods=["POST", "GET"])
+def contact():
+    if request.method == "POST":
+        if captcha.validate():
+            email = request.form.get("email")
+            message = request.form.get("message")
+
+            msg = Message(f"Message de {email}", sender = "no-reply@coolmorning.fr", recipients = ["arthurgouzy@gmail.com"])
+            msg.body = message
+            mail.send(msg)
+        else:
+            flash("Complètez le captcha", "error")
+            return render_template("contact.html")
+
+
+        flash("Message envoyé", "info")
+        return render_template("contact.html")
+
+    return render_template("contact.html")

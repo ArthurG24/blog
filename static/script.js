@@ -17,7 +17,9 @@ var elements = ["nav",
 "label-date",
 "delete-button",
 "status-input",
-"thumb"];
+"thumb",
+"input-login",
+"message"];
 
 const checkbox = document.getElementById('checkbox');
 
@@ -26,7 +28,7 @@ window.addEventListener("load", ()=>{
   if (localStorage.getItem("theme") == "light") {
     
     tinymce.init({
-      selector: 'textarea',
+      selector: 'textarea.editor',
       content_style:
         "body { background: #e1e1e1; color: #03121a; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
@@ -53,7 +55,7 @@ window.addEventListener("load", ()=>{
   
   else {
     tinymce.init({
-      selector: 'textarea',
+      selector: 'textarea.editor',
       content_style:
         "body { background: #03141d; color: #cfcbc5; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
@@ -77,7 +79,7 @@ checkbox.addEventListener("change", ()=>{
     tinymce.remove();
 
     tinymce.init({
-      selector: 'textarea',
+      selector: 'textarea.editor',
       content_style:
         "body { background: #e1e1e1; color: #cfcbc5; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
@@ -107,7 +109,7 @@ checkbox.addEventListener("change", ()=>{
     tinymce.remove();
 
     tinymce.init({
-      selector: 'textarea',
+      selector: 'textarea.editor',
       content_style:
         "body { background: #03141d; color: #03121a; font-size: 1.2em; font-family: Verdana, Arial, Tahoma, Serif; }",
       // plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists link checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
